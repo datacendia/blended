@@ -2,6 +2,9 @@ import { RED_FLAGS, triage } from "@/lib/redflags";
 import { TREATMENTS } from "@/lib/evidence";
 import { EXAMS } from "@/lib/exams";
 import { CLINICIANS } from "@/lib/clinicians";
+import { GUIDES } from "@/lib/guides";
+import { POSTER_CHECKS, WIRING_SOURCES } from "@/lib/organs";
+import { CAUSES, PARTS, POSITIONS } from "@/lib/vertebra";
 import { HANDS_ON, PRACTICES } from "@/lib/practices";
 import { SOURCES } from "@/lib/sources";
 import { readFileSync, readdirSync, statSync } from "node:fs";
@@ -61,7 +64,11 @@ describe("evidence", () => {
       ...TREATMENTS.flatMap((t) => t.sources),
       ...Object.values(EXAMS).flatMap((e) => e.sources),
       ...HANDS_ON.flatMap((t) => t.sources),
-      ...PRACTICES.flatMap((p) => p.sources)
+      ...PRACTICES.flatMap((p) => p.sources),
+      ...POSTER_CHECKS.flatMap((c) => c.sources),
+      ...WIRING_SOURCES,
+      ...[...PARTS, ...CAUSES, ...POSITIONS].flatMap((p) => p.sources),
+      ...GUIDES.flatMap((g) => g.sources)
     ];
     for (const id of cited) expect(known.has(id)).toBe(true);
   });

@@ -2,6 +2,7 @@
 
 import { createContext, useContext } from "react";
 import { isLocale, type Locale } from "@/lib/i18n";
+import { guideById } from "@/lib/guides";
 import { PAGES } from "@/lib/nav";
 
 /**
@@ -13,24 +14,30 @@ import { PAGES } from "@/lib/nav";
 export interface Route {
   locale: Locale;
   slug: string;
+  /** A page under the slug: only the clinician guides (/es/who-to-see/physio/) have one. */
+  id?: string;
 }
 
 export const SLUGS = PAGES.map((p) => p.slug);
 
 export function parsePath(path: string): Route | null {
-  const m = path.match(/^\/(en|es)\/(?:([a-z-]+)\/?)?$/);
+  const m = path.match(/^\/(en|es)\/(?:([a-z-]+)(?:\/([a-z-]+))?\/?)?$/);
   if (!m || !isLocale(m[1]!)) return null;
+  const locale = m[1] as Locale;
   const slug = m[2] ?? "";
-  return SLUGS.includes(slug) ? { locale: m[1] as Locale, slug } : null;
+  if (!SLUGS.includes(slug)) return null;
+  if (m[3] === undefined) return { locale, slug };
+  return slug === "who-to-see" && guideById(m[3]) ? { locale, slug, id: m[3] } : null;
 }
 
 export function pathFor(route: Route): string {
-  return route.slug ? `/${route.locale}/${route.slug}/` : `/${route.locale}/`;
+  if (!route.slug) return `/${route.locale}/`;
+  return route.id ? `/${route.locale}/${route.slug}/${route.id}/` : `/${route.locale}/${route.slug}/`;
 }
 
-/** A bare #es or #en-tracker in the link opens that page; anything else is a page anchor. */
+/** A bare #es, #en-tracker or #es-who-to-see/physio in the link opens that page; anything else is a page anchor. */
 export function routeFromHash(hash: string): Route | null {
-  const m = hash.match(/^#(en|es)(?:-([a-z-]+))?$/);
+  const m = hash.match(/^#(en|es)(?:-([a-z-]+(?:\/[a-z-]+)?))?$/);
   if (!m) return null;
   return parsePath(m[2] ? `/${m[1]}/${m[2]}/` : `/${m[1]}/`);
 }

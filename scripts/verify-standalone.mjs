@@ -89,6 +89,26 @@ const overflow = (page) => page.evaluate(() => document.documentElement.scrollWi
 }
 
 {
+  const { page, errors, context } = await open({ hash: "#en-who-to-see" });
+  await page.locator("#chiropractor").getByRole("link", { name: /Full guide/ }).click();
+  check((await page.locator("h1").first().textContent())?.includes("Chiropractor"), "Who to see card opens the chiropractor guide");
+  await page.getByRole("banner").getByRole("link", { name: "Español" }).click();
+  check((await page.locator("h1").first().textContent())?.includes("Quiropráctico"), "switching language keeps the guide");
+  await page.getByRole("banner").getByRole("link", { name: "Columna" }).click();
+  await page.getByRole("navigation", { name: "Páginas de la columna" }).getByRole("link", { name: "Nervios y órganos" }).click();
+  check((await page.getByText("Nervio vago (X)").count()) > 0, "spine sub-nav opens the organ wiring in Spanish");
+  check(errors.length === 0, `no console errors on the new pages${errors.length ? `: ${errors.join(" | ")}` : ""}`);
+  await context.close();
+}
+
+{
+  const { page, context } = await open({ hash: "#es-who-to-see/neurologist", width: 390 });
+  check((await page.locator("h1").first().textContent())?.includes("Neurólogo"), "#es-who-to-see/neurologist opens that guide");
+  check((await overflow(page)) <= 0, "guide has no sideways scroll at 390px");
+  await context.close();
+}
+
+{
   const { page, context } = await open({ scheme: "dark" });
   const bg = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
   check(bg === "rgb(12, 18, 16)", `dark mode follows the system (${bg})`);

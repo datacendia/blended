@@ -30,6 +30,14 @@
      surface (CVD ΔE 24.7, contrast >= 3:1). Not status colours. */
   --series-pain: 235 104 52;
   --series-function: 42 120 214;
+  /* The two autonomic systems reuse that validated pair: they are drawn as
+     lines on the same surface, and they must never be confused. */
+  --symp: 235 104 52;
+  --parasymp: 42 120 214;
+  /* Anatomy: bone, nerve and disc in the colours clinic posters use. */
+  --bone: 236 229 211;
+  --nerve: 214 156 20;
+  --disc: 116 164 210;
 }
 
 /* Dark follows the system unless the page is explicitly told otherwise
@@ -57,6 +65,11 @@
     --bad: 244 108 108;
     --series-pain: 217 89 38;
     --series-function: 57 135 229;
+    --symp: 217 89 38;
+    --parasymp: 57 135 229;
+    --bone: 92 96 86;
+    --nerve: 232 186 64;
+    --disc: 86 140 196;
   }
 }
 
@@ -81,6 +94,11 @@
   --bad: 244 108 108;
   --series-pain: 217 89 38;
   --series-function: 57 135 229;
+  --symp: 217 89 38;
+  --parasymp: 57 135 229;
+  --bone: 92 96 86;
+  --nerve: 232 186 64;
+  --disc: 86 140 196;
 }
 
 html {

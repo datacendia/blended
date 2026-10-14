@@ -7,6 +7,8 @@ export function HomeContent({ locale }: { locale: Locale }) {
   const c = COPY.home;
   const tools = [
     { slug: "spine", title: COPY.nav.spine, body: c.toolSpine, swatch: "bg-cervical" },
+    { slug: "vertebra", title: COPY.nav.vertebra, body: c.toolVertebra, swatch: "bg-nerve" },
+    { slug: "organs", title: COPY.nav.organs, body: c.toolOrgans, swatch: "bg-symp" },
     { slug: "map", title: COPY.nav.map, body: c.toolMap, swatch: "bg-thoracic" },
     { slug: "report", title: COPY.nav.report, body: c.toolReport, swatch: "bg-lumbar" },
     { slug: "tracker", title: COPY.nav.tracker, body: c.toolTracker, swatch: "bg-sacral" },

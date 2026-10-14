@@ -19,7 +19,7 @@ import { chromium } from "playwright";
 const OUT = join(process.cwd(), "out");
 const SHOTS = join(process.cwd(), ".verify");
 const PORT = 4321;
-const PAGES = ["", "spine", "map", "report", "tracker", "warning-signs", "who-to-see", "what-works", "about"];
+const PAGES = ["", "spine", "vertebra", "organs", "map", "report", "tracker", "warning-signs", "who-to-see", "who-to-see/chiropractor", "what-works", "about"];
 const TYPES = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".svg": "image/svg+xml", ".png": "image/png", ".ico": "image/x-icon", ".txt": "text/plain", ".json": "application/json" };
 
 if (!existsSync(OUT)) {
@@ -76,7 +76,7 @@ for (const locale of ["en", "es"]) {
       const brandNav = await page.getByRole("banner").innerText();
       const wrong = locale === "es" ? /Where it hurts|Warning signs/ : /Dónde duele|Señales de alarma/;
       if (wrong.test(brandNav)) fail(`${label}: header in the wrong language`);
-      await page.screenshot({ path: join(SHOTS, `${locale}-${slug || "home"}-${width}-${scheme}.png`), fullPage: true });
+      await page.screenshot({ path: join(SHOTS, `${locale}-${(slug || "home").replace("/", "-")}-${width}-${scheme}.png`), fullPage: true });
       await page.close();
     }
   }
@@ -133,6 +133,36 @@ console.log("The tools give their answers");
   (await page.getByText(/Checkpoint: 6 sessions/).count()) === 0
     ? pass("tracker: delete removes everything")
     : fail("tracker: delete left data behind");
+  await page.close();
+}
+{
+  const { page } = await open("/en/organs/", { width: 1280 });
+  (await page.getByText("Vagus nerve (X)").count()) > 0 ? pass("organs: the heart opens on its vagus supply") : fail("organs: heart panel missing the vagus");
+  await page.getByRole("button", { name: "Bladder", exact: true }).click();
+  (await page.getByText("Pelvic splanchnic nerves (S2-S4)").count()) > 0 ? pass("organs: bladder → pelvic nerves S2-S4") : fail("organs: bladder did not show S2-S4");
+  await page.getByRole("button", { name: "C6 spinal nerve" }).click();
+  (await page.getByText("No organ wiring leaves the cord here.").count()) > 0 ? pass("organs: C6 carries no organ wiring") : fail("organs: C6 claimed organ wiring");
+  await page.close();
+}
+{
+  const { page } = await open("/es/vertebra/", { width: 390 });
+  await page.getByRole("button", { name: /^Lumbar/ }).click();
+  (await page.getByRole("button", { name: "Cola de caballo" }).count()) === 1 ? pass("vertebra: a lumbar vertebra holds the cauda equina (es)") : fail("vertebra: no cauda equina in the lumbar view");
+  await page.getByRole("button", { name: "Mirando arriba, girado hacia ese lado" }).click();
+  (await page.getByText("Raíz comprimida").count()) > 0 ? pass("vertebra: herniation + looking up and turning squeezes the root") : fail("vertebra: root not squeezed");
+  await page.getByRole("button", { name: "Mirando hacia abajo" }).click();
+  (await page.getByText("Espacio de sobra").count()) > 0 ? pass("vertebra: looking down gives the root room") : fail("vertebra: looking down did not ease it");
+  await page.close();
+}
+{
+  const { page } = await open("/en/who-to-see/", { width: 390 });
+  await page.locator("#physio").getByRole("link", { name: /Full guide/ }).click();
+  await page.waitForURL(/\/en\/who-to-see\/physio\/$/);
+  (await page.locator("h1").textContent())?.includes("Physiotherapist") ? pass("who to see: card opens the physiotherapist guide") : fail("who to see: guide link broken");
+  const boxes = page.getByRole("checkbox");
+  await boxes.nth(0).check();
+  await boxes.nth(1).check();
+  (await page.getByText(`2 of ${await boxes.count()}`).count()) > 0 ? pass("guide: first-visit checklist counts ticks") : fail("guide: checklist count missing");
   await page.close();
 }
 {

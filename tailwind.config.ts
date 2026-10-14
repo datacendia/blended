@@ -24,7 +24,13 @@ const config: Config = {
         coccyx: "rgb(var(--coccyx) / <alpha-value>)",
         good: "rgb(var(--good) / <alpha-value>)",
         warn: "rgb(var(--warn) / <alpha-value>)",
-        bad: "rgb(var(--bad) / <alpha-value>)"
+        bad: "rgb(var(--bad) / <alpha-value>)",
+        // Autonomic systems and anatomy figures.
+        symp: "rgb(var(--symp) / <alpha-value>)",
+        parasymp: "rgb(var(--parasymp) / <alpha-value>)",
+        bone: "rgb(var(--bone) / <alpha-value>)",
+        nerve: "rgb(var(--nerve) / <alpha-value>)",
+        disc: "rgb(var(--disc) / <alpha-value>)"
       },
       fontFamily: {
         sans: ["ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "Roboto", "sans-serif"],

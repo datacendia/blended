@@ -22,12 +22,15 @@ Working name. The domain shortlist is unverified — see [Domains](#domains).
 | Route | What it does |
 |---|---|
 | `/en/spine/` | C1 to coccyx along the real S-curve. Tap a vertebra or root: exits, disc levels, what each root supplies, autonomic wiring (with an honest caveat). Region zoom for phones. Spanish shows D1-D12, as Lima clinic posters do. |
+| `/en/vertebra/` | The poster's vertebra inset, tappable: cervical, thoracic and lumbar top views (artery holes in the neck, rib joints mid-back, cauda equina instead of cord in the low back). Then a side view of how a root gets trapped: healthy, disc herniation or bony narrowing, with the head down, level, or up and turned (Spurling's direction). |
+| `/en/organs/` | The organ-wiring poster, redrawn with the real paths: sympathetic from T1-L2 through relay ganglia, parasympathetic from the brainstem (vagus) or S2-S4. Tap an organ or a spinal nerve. Four poster claims checked against anatomy and trials. |
 | `/en/map/` | Front, back and hand. Tap areas by side and pick symptoms; roots ranked by fit; saddle numbness, both-sided symptoms and weakness escalate. "Did your clinician check these?" exam checklist. |
 | `/en/report/` | PostureScreen-style decoder. Right-vs-left and front-vs-back photo agreement, the scan's own noise floor, averages that add opposite shifts, the "effective head weight" model, re-scan comparison against noise. |
 | `/en/tracker/` | Plan, weekly check-ins, MCID-based verdicts, progress chart, cost per session and per point, proactive checkpoints, export/import, print for clinician. |
 | `/en/warning-signs/` | Red-flag triage: emergency / within 1-2 days / coming weeks, with why each matters. |
-| `/en/who-to-see/` | GP, physiatrist, physio, chiropractor, osteopath, neurologist, surgeon, massage — who can diagnose, prescribe, order scans. Questions to ask any of them. |
-| `/en/what-works/` | 13 treatments graded Supported / May help / Unclear / Not supported, each with harms and sources. |
+| `/en/who-to-see/` | GP, physiatrist, physio, chiropractor, osteopath, neurologist, surgeon, massage — who can diagnose, prescribe, order scans. Physio vs chiropractor vs osteopath side by side; tai chi, yoga and acupuncture with tradition kept apart from trial results. Questions to ask any of them. |
+| `/en/who-to-see/<id>/` | A guide per profession: a first-visit checklist you can tick (kept in memory only), good signs and warning signs, what they use linked to its evidence verdict, questions to ask, training and how to check a registration. |
+| `/en/what-works/` | 14 treatments graded Supported / May help / Unclear / Not supported, each with harms and sources. |
 | `/en/about/` | Scope, privacy, how evidence is chosen, every source. |
 
 Every route exists under `/es/` too. `/` sends a Spanish browser to `/es/`.

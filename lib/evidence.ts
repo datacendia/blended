@@ -147,6 +147,17 @@ export const TREATMENTS: readonly Treatment[] = [
     sources: ["fda2014"]
   },
   {
+    id: "massage",
+    name: { en: "Massage", es: "Masaje" },
+    verdict: "unclear",
+    summary: {
+      en: "Often feels good and may ease muscle tension for a short while, but trials of massage for neck pain are small and mixed, and a Cochrane review could not make a recommendation either way.",
+      es: "Suele sentar bien y puede aliviar la tensión muscular por un rato, pero los ensayos de masaje para el dolor de cuello son pequeños y dispares, y una revisión Cochrane no pudo recomendarlo ni desaconsejarlo."
+    },
+    harms: { en: "Soreness the next day; avoid deep pressure on the front and sides of the neck.", es: "Molestias al día siguiente; evita la presión profunda en la parte delantera y los lados del cuello." },
+    sources: ["patel2012"]
+  },
+  {
     id: "posture",
     name: { en: "Correcting posture measured from photos", es: "Corregir la postura medida con fotos" },
     verdict: "unclear",

@@ -18,6 +18,10 @@ export const COPY = {
   nav: {
     home: { en: "Home", es: "Inicio" },
     spine: { en: "Spine", es: "Columna" },
+    vertebra: { en: "Vertebra up close", es: "Vértebra de cerca" },
+    organs: { en: "Organ wiring", es: "Nervios y órganos" },
+    spineSection: { en: "Spine pages", es: "Páginas de la columna" },
+    spineLevels: { en: "Level by level", es: "Nivel por nivel" },
     map: { en: "Where it hurts", es: "Dónde duele" },
     report: { en: "Posture report", es: "Informe postural" },
     tracker: { en: "Is it working?", es: "¿Funciona?" },
@@ -71,6 +75,14 @@ export const COPY = {
     q3: { en: "After six sessions, is this working — or just costing?", es: "Después de seis sesiones, ¿esto funciona o solo cuesta?" },
     toolsTitle: { en: "Tools", es: "Herramientas" },
     toolSpine: { en: "Tap any vertebra from C1 to the tailbone: which nerve roots leave there, what they supply, and what the poster on the wall got right.", es: "Toca cualquier vértebra de C1 al cóccix: qué raíces salen ahí, qué inervan y qué acertó el póster de la pared." },
+    toolVertebra: {
+      en: "One vertebra, part by part, in the neck, mid back and low back, and a side view of exactly how a nerve gets trapped.",
+      es: "Una vértebra, parte por parte, en el cuello, la espalda media y la zona lumbar, y una vista lateral de cómo exactamente se atrapa un nervio."
+    },
+    toolOrgans: {
+      en: "The organ poster on the clinic wall, made interactive and checked: which nerves really run each organ, and which never touch the spine.",
+      es: "El póster de órganos de la pared de la clínica, interactivo y verificado: qué nervios controlan de verdad cada órgano y cuáles nunca tocan la columna."
+    },
     toolMap: { en: "Tap where you feel pain, numbness or tingling. See which nerve roots usually serve that area, and what a proper exam checks.", es: "Toca dónde sientes dolor, adormecimiento u hormigueo. Mira qué raíces suelen inervar esa zona y qué revisa una buena exploración." },
     toolReport: { en: "Enter your posture scan. RootAtlas checks it against itself — the left and right photos measure the same body — and tells you its real margin of error.", es: "Introduce tu escáner postural. RootAtlas lo contrasta consigo mismo (las fotos izquierda y derecha miden el mismo cuerpo) y te dice su margen de error real." },
     toolTracker: { en: "Score pain and function weekly. RootAtlas measures change against published thresholds, works out what each point of improvement cost, and flags when to ask questions.", es: "Puntúa dolor y función cada semana. RootAtlas mide el cambio frente a umbrales publicados, calcula cuánto costó cada punto de mejoría y avisa cuándo preguntar." },
@@ -378,7 +390,120 @@ export const COPY = {
     rowTradition: { en: "The traditional idea", es: "La idea tradicional" },
     rowGoodFor: { en: "Good for", es: "Útil para" },
     rowSafety: { en: "Safety", es: "Seguridad" },
-    seeCard: { en: "Who they are and what to watch for", es: "Quiénes son y a qué prestar atención" }
+    seeCard: { en: "Full guide: first visit, warning signs, questions", es: "Guía completa: primera visita, señales de alarma, preguntas" },
+    openGuide: { en: "Full guide", es: "Guía completa" }
+  },
+  guide: {
+    eyebrow: { en: "Who to see · guide", es: "A quién acudir · guía" },
+    firstVisit: { en: "What a good first visit includes", es: "Qué incluye una buena primera visita" },
+    checkHint: {
+      en: "Been already? Tick what happened. Nothing is saved.",
+      es: "¿Ya fuiste? Marca lo que ocurrió. No se guarda nada."
+    },
+    checkScore: { en: "{n} of {total}", es: "{n} de {total}" },
+    checkMissing: {
+      en: "Worth raising at your next visit: the ones you haven't ticked.",
+      es: "Vale la pena plantear en tu próxima visita los que no has marcado."
+    },
+    checkAll: { en: "That's everything a good first visit should include.", es: "Es todo lo que debería incluir una buena primera visita." },
+    goodSigns: { en: "Good signs", es: "Buenas señales" },
+    warningSigns: { en: "Watch out for", es: "Atención a" },
+    uses: { en: "What they use, and what the research says", es: "Qué usan y qué dice la investigación" },
+    usesNote: {
+      en: "Verdicts from the evidence board, for neck pain and a trapped nerve. Tap one for the detail and sources.",
+      es: "Veredictos del panel de evidencia, para el dolor de cuello y el nervio atrapado. Toca uno para ver el detalle y las fuentes."
+    },
+    questions: { en: "Questions to ask", es: "Preguntas que hacer" },
+    universal: { en: "Plus the questions worth asking any clinician", es: "Además de las preguntas para cualquier profesional" },
+    training: { en: "Training", es: "Formación" },
+    check: { en: "How to check", es: "Cómo comprobarlo" },
+    others: { en: "Other guides", es: "Otras guías" },
+    back: { en: "All professions", es: "Todas las profesiones" }
+  },
+  organs: {
+    title: { en: "How your organs are wired", es: "Cómo están conectados tus órganos" },
+    lead: {
+      en: "The nervous-system poster on many clinic walls, made interactive and checked against anatomy. Tap an organ to see which nerves run it, or tap a spinal nerve to see what leaves the cord there.",
+      es: "El póster del sistema nervioso de muchas clínicas, interactivo y contrastado con la anatomía. Toca un órgano para ver qué nervios lo controlan, o toca un nervio espinal para ver qué sale de la médula ahí."
+    },
+    figureLabel: {
+      en: "Diagram of the automatic nerves running from the brainstem and spinal cord to the organs",
+      es: "Diagrama de los nervios automáticos que van del tronco encefálico y la médula a los órganos"
+    },
+    brainstem: { en: "Brainstem", es: "Tronco encefálico" },
+    chain: { en: "Sympathetic chain", es: "Cadena simpática" },
+    legendTint: { en: "Spinal nerves where automatic fibres leave the cord", es: "Nervios espinales por donde salen fibras automáticas de la médula" },
+    legendRelays: { en: "Relay stations (ganglia), outside the spine", es: "Estaciones de relevo (ganglios), fuera de la columna" },
+    legendVagus: { en: "The vagus nerve, straight from the brainstem", es: "El nervio vago, directo desde el tronco encefálico" },
+    levels: { en: "Spinal nerves", es: "Nervios espinales" },
+    relay: { en: "Relay", es: "Relevo" },
+    effect: { en: "Effect", es: "Efecto" },
+    nerve: { en: "Nerve", es: "Nervio" },
+    route: { en: "Route", es: "Recorrido" },
+    skullRoute: {
+      en: "Leaves the brainstem through the skull. Never passes through the spine.",
+      es: "Sale del tronco encefálico a través del cráneo. Nunca pasa por la columna."
+    },
+    sacralRoute: { en: "Leaves through the openings in the sacrum.", es: "Sale por los orificios del sacro." },
+    noPara: { en: "No parasympathetic supply of any importance.", es: "Sin aporte parasimpático de importancia." },
+    levelTitle: { en: "{level} spinal nerve", es: "Nervio espinal {level}" },
+    levelOrgans: { en: "Organ wiring that leaves the cord here:", es: "Conexiones a órganos que salen de la médula aquí:" },
+    noOrgans: { en: "No organ wiring leaves the cord here.", es: "Ninguna conexión a órganos sale de la médula aquí." },
+    seeOnSpine: { en: "See the {level} root on the spine", es: "Ver la raíz {level} en la columna" },
+    ranges: {
+      en: "Levels are approximate: anatomy textbooks differ by a level or two. The spinal cord is shorter than the spine, so the cord segments for the low back and pelvis sit around the T10-L1 vertebrae; their nerves run down the canal and leave at their own level.",
+      es: "Los niveles son aproximados: los textos de anatomía difieren en uno o dos niveles. La médula es más corta que la columna, así que los segmentos de la zona lumbar y la pelvis están a la altura de las vértebras D10-L1; sus nervios bajan por el canal y salen en su propio nivel."
+    },
+    posterTitle: { en: "Checking the poster", es: "Revisando el póster" },
+    posterLead: {
+      en: "What these posters get right, and what they imply that isn't so.",
+      es: "Lo que estos pósteres aciertan y lo que dan a entender sin ser cierto."
+    },
+    neckTitle: { en: "And a trapped nerve in the neck?", es: "¿Y un nervio atrapado en el cuello?" },
+    neck: {
+      en: "No organ wiring leaves the spinal cord between C1 and C8. A trapped C5-C8 root affects the shoulder, arm and hand: pain, tingling, numbness or weakness. It is not a sign that anything is wrong with your organs.",
+      es: "Ninguna conexión a órganos sale de la médula entre C1 y C8. Una raíz C5-C8 atrapada afecta al hombro, el brazo y la mano: dolor, hormigueo, adormecimiento o debilidad. No es señal de que algo vaya mal en tus órganos."
+    },
+    seeEvidence: { en: "What the research says about adjustments for organs", es: "Lo que dice la investigación sobre los ajustes para los órganos" }
+  },
+  vertebra: {
+    title: { en: "One vertebra, up close", es: "Una vértebra, de cerca" },
+    lead: {
+      en: "The inset on the clinic poster, made interactive. Tap each part to see what it does and why it matters for a trapped nerve. Neck, mid-back and low-back vertebrae are built differently for different jobs.",
+      es: "El recuadro del póster de la clínica, ahora interactivo. Toca cada parte para ver qué hace y por qué importa en un nervio atrapado. Las vértebras del cuello, la espalda media y la zona lumbar están hechas de forma distinta para trabajos distintos."
+    },
+    kindLabel: { en: "Which vertebra?", es: "¿Qué vértebra?" },
+    partsLabel: { en: "Parts of the vertebra", es: "Partes de la vértebra" },
+    figureLabel: { en: "A {kind} vertebra seen from above, front at the top", es: "Una vértebra {kind} vista desde arriba, con la parte delantera arriba" },
+    front: { en: "Front", es: "Delante" },
+    back: { en: "Back", es: "Detrás" },
+    schematic: { en: "Schematic, not to scale.", es: "Esquema, no a escala." },
+    inThis: { en: "In a {kind} vertebra", es: "En una vértebra {kind}" },
+    matters: { en: "Why it matters", es: "Por qué importa" },
+    seeTrapped: { en: "See how a root gets trapped", es: "Ver cómo se atrapa una raíz" },
+    trappedTitle: { en: "How a nerve gets trapped", es: "Cómo se atrapa un nervio" },
+    trappedLead: {
+      en: "Two neck vertebrae from the side, front on the left. The root leaves through the opening between them, toward you. Change what is narrowing the opening and how the head is held.",
+      es: "Dos vértebras cervicales de lado, con la parte delantera a la izquierda. La raíz sale hacia ti por la abertura entre ellas. Cambia qué estrecha la abertura y cómo se sostiene la cabeza."
+    },
+    causeLabel: { en: "What is narrowing the opening", es: "Qué estrecha la abertura" },
+    positionLabel: { en: "Head position", es: "Posición de la cabeza" },
+    sideFigure: {
+      en: "Side view of two neck vertebrae, the disc between them and the nerve root in the opening",
+      es: "Vista lateral de dos vértebras cervicales, el disco entre ellas y la raíz nerviosa en la abertura"
+    },
+    legendBone: { en: "Bone", es: "Hueso" },
+    legendDisc: { en: "Disc", es: "Disco" },
+    legendRoot: { en: "Nerve root, seen end-on", es: "Raíz nerviosa, vista de frente" },
+    picture: {
+      en: "This shows the direction of each effect, not your scan. Only an examination, and sometimes a scan, can say what is happening in your neck.",
+      es: "Esto muestra la dirección de cada efecto, no tu resonancia. Solo una exploración, y a veces una resonancia, puede decir qué pasa en tu cuello."
+    },
+    nextTitle: { en: "Where would you feel it?", es: "¿Dónde lo sentirías?" },
+    next: {
+      en: "Each root reaches its own patch of skin and its own muscles. Tap where you feel symptoms on the body map to see which roots usually serve that area.",
+      es: "Cada raíz llega a su propia zona de piel y a sus propios músculos. Toca dónde sientes síntomas en el mapa corporal para ver qué raíces suelen inervar esa zona."
+    }
   },
   evidence: {
     title: { en: "What works for neck pain and a trapped nerve", es: "Qué funciona para el dolor de cuello y el nervio atrapado" },

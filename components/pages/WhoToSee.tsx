@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { guideHref } from "@/components/pages/Guide";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SourceList } from "@/components/ui/SourceList";
 import { VerdictBadge } from "@/components/ui/VerdictBadge";
@@ -38,9 +40,9 @@ export function WhoToSeeContent({ locale }: { locale: Locale }) {
             <li key={t.id} className="grid gap-4 rounded-2xl border border-line bg-surface p-5 lg:row-span-5 lg:grid-rows-subgrid">
               <div>
                 <h3 className="text-lg font-semibold">{t.name[locale]}</h3>
-                <a className="text-sm text-accent underline underline-offset-2" href={`#${t.clinicianId}`}>
+                <Link className="text-sm text-accent underline underline-offset-2" href={guideHref(locale, t.clinicianId)}>
                   {c.seeCard[locale]}
-                </a>
+                </Link>
               </div>
               <div className="space-y-1">
                 {label(c.rowApproach)}
@@ -87,6 +89,12 @@ export function WhoToSeeContent({ locale }: { locale: Locale }) {
               <span className="font-semibold">{c.watchFor[locale]}: </span>
               <span className="text-ink-2">{cl.watchFor[locale]}</span>
             </p>
+            <Link
+              href={guideHref(locale, cl.id)}
+              className="mt-auto self-start pt-4 text-sm font-medium text-accent underline underline-offset-2"
+            >
+              {c.openGuide[locale]} →
+            </Link>
           </li>
         ))}
       </ul>

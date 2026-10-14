@@ -158,6 +158,36 @@ export const SOURCES = [
     citation:
       "Vickers AJ, Vertosick EA, Lewith G, et al. Acupuncture for chronic pain: update of an individual patient data meta-analysis. J Pain. 2018;19(5):455-474.",
     usedFor: "Acupuncture beats sham and no acupuncture for chronic pain, but the gap over sham is small."
+  },
+  {
+    id: "standring2020",
+    citation:
+      "Standring S, ed. Gray's Anatomy: The Anatomical Basis of Clinical Practice. 42nd ed. Elsevier; 2020.",
+    usedFor: "Autonomic wiring of the organs and the parts of a vertebra. Textbooks differ by a level or two on exact segment ranges."
+  },
+  {
+    id: "nakashima2015",
+    citation:
+      "Nakashima H, Yukawa Y, Suda K, Yamagata M, Ueta T, Kato F. Abnormal findings on magnetic resonance images of the cervical spines in 1211 asymptomatic subjects. Spine. 2015;40(6):392-398.",
+    usedFor: "Disc bulges appear on most neck MRIs of people with no symptoms, so a bulge on a scan doesn't prove it's the cause."
+  },
+  {
+    id: "yoo1992",
+    citation:
+      "Yoo JU, Zou D, Edwards WT, Bayley J, Yuan HA. Effect of cervical spine motion on the neuroforaminal dimensions of human cervical spine. Spine. 1992;17(10):1131-1136.",
+    usedFor: "The side opening a neck root leaves through gets smaller when looking up or turning toward that side, and larger when looking down."
+  },
+  {
+    id: "kawchuk2015",
+    citation:
+      "Kawchuk GN, Fryer J, Jaremko JL, Zeng H, Rowe L, Thompson R. Real-time visualization of joint cavitation. PLoS One. 2015;10(4):e0119470.",
+    usedFor: "The crack of a joint is a gas cavity forming in the joint fluid."
+  },
+  {
+    id: "patel2012",
+    citation:
+      "Patel KC, Gross A, Graham N, et al. Massage for mechanical neck disorders. Cochrane Database Syst Rev. 2012;(9):CD004871.",
+    usedFor: "Massage for neck pain: effects uncertain, no recommendation possible."
   }
 ] as const satisfies readonly Source[];
 
