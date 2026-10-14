@@ -20,7 +20,9 @@ export interface Shape {
   side: Side;
   view: MapView;
   d: string;
+  /** Where the region's name sits, and its rotation in degrees. Hand only. */
   labelAt?: Pt;
+  labelAngle?: number;
 }
 
 const W = 200;
@@ -168,16 +170,16 @@ interface Finger {
 }
 
 const FINGERS: Finger[] = [
-  { region: "little", x: 54, y: 62, w: 16, h: 58, labelAt: [62, 54] },
-  { region: "ring", x: 73, y: 34, w: 17, h: 86, labelAt: [81.5, 26] },
-  { region: "middle", x: 93, y: 22, w: 18, h: 98, labelAt: [102, 14] },
-  { region: "index", x: 114, y: 36, w: 17, h: 84, labelAt: [122.5, 28] }
+  { region: "little", x: 54, y: 62, w: 16, h: 58, labelAt: [62, 91] },
+  { region: "ring", x: 73, y: 34, w: 17, h: 86, labelAt: [81.5, 77] },
+  { region: "middle", x: 93, y: 22, w: 18, h: 98, labelAt: [102, 71] },
+  { region: "index", x: 114, y: 36, w: 17, h: 84, labelAt: [122.5, 78] }
 ];
 
-const THUMB: Pt[] = [[141, 146], [160, 120], [172, 100], [186, 104], [184, 122], [166, 160], [150, 196], [142, 190]];
+const THUMB: Pt[] = [[142, 150], [160, 124], [172, 104], [186, 108], [184, 126], [168, 164], [150, 204], [140, 210]];
 const PALM_LITTLE: Pt[] = [[52, 120], [82, 120], [82, 222], [60, 216], [52, 196]];
 const PALM_CENTRE: Pt[] = [[82, 120], [112, 120], [112, 226], [82, 222]];
-const PALM_THUMB: Pt[] = [[112, 120], [140, 122], [150, 170], [140, 214], [112, 226]];
+const PALM_THUMB: Pt[] = [[112, 120], [140, 122], [142, 150], [140, 210], [112, 226]];
 
 function handShapes(side: "L" | "R"): Shape[] {
   const flip = side === "L";
@@ -189,9 +191,13 @@ function handShapes(side: "L" | "R"): Shape[] {
       view: "hand" as const,
       side,
       d: rrect(flip ? mirrorRect(f.x, f.w) : f.x, f.y, f.w, f.h, f.w / 2),
-      labelAt: at(f.labelAt)
+      // Names run up inside each finger: written above the tips, the longer
+      // Spanish ones ("Dedo medio", "Anular", "Índice") collided.
+      labelAt: at(f.labelAt),
+      labelAngle: -90
     })),
-    { region: "thumb", view: "hand", side, d: poly(pts(THUMB)), labelAt: at([184, 94]) },
+    // Along the thumb's axis; mirrored, the angle flips so it never reads upside down.
+    { region: "thumb", view: "hand", side, d: poly(pts(THUMB)), labelAt: at([166, 152]), labelAngle: flip ? 65 : -65 },
     { region: "palm-little-side", view: "hand", side, d: poly(pts(PALM_LITTLE)) },
     { region: "palm-centre", view: "hand", side, d: poly(pts(PALM_CENTRE)) },
     { region: "palm-thumb-side", view: "hand", side, d: poly(pts(PALM_THUMB)) }

@@ -145,19 +145,26 @@ export function NerveMap({ locale }: { locale: Locale }) {
             {view === "hand" &&
               shapes
                 .filter((s) => s.labelAt)
-                .map((s) => (
-                  <text
-                    key={`label-${s.region}`}
-                    x={s.labelAt![0]}
-                    y={s.labelAt![1]}
-                    fontSize="9"
-                    textAnchor="middle"
-                    fill="rgb(var(--ink-2))"
-                    aria-hidden="true"
-                  >
-                    {regionById(s.region)?.label[locale]}
-                  </text>
-                ))}
+                .map((s) => {
+                  const [x, y] = s.labelAt!;
+                  const on = picked.includes(pickKey({ region: s.region, side: s.side }));
+                  return (
+                    <text
+                      key={`label-${s.region}`}
+                      x={x}
+                      y={y}
+                      fontSize="9"
+                      textAnchor="middle"
+                      dominantBaseline="central"
+                      transform={s.labelAngle ? `rotate(${s.labelAngle} ${x} ${y})` : undefined}
+                      fill={on ? "rgb(var(--accent-ink))" : "rgb(var(--ink-2))"}
+                      pointerEvents="none"
+                      aria-hidden="true"
+                    >
+                      {regionById(s.region)?.label[locale]}
+                    </text>
+                  );
+                })}
           </svg>
           <p className="min-h-[1.5rem] px-1 text-center text-sm text-ink-2" aria-hidden="true">
             {hovered ? pickName(hovered) : view === "hand" ? c.handHint[locale] : c.hover[locale]}
