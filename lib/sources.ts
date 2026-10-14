@@ -134,6 +134,30 @@ export const SOURCES = [
     citation:
       "American Chiropractic Association. Five things physicians and patients should question. Choosing Wisely (ABIM Foundation), 2017.",
     usedFor: "No spinal imaging for acute low back pain in the first six weeks without red flags."
+  },
+  {
+    id: "sherrington2019",
+    citation:
+      "Sherrington C, Fairhall NJ, Wallbank GK, et al. Exercise for preventing falls in older people living in the community. Cochrane Database Syst Rev. 2019;1:CD012424.",
+    usedFor: "Tai chi and balance exercise reduce falls in older adults living at home."
+  },
+  {
+    id: "hall2011",
+    citation:
+      "Hall AM, Maher CG, Lam P, Ferreira M, Latimer J. Tai chi exercise for treatment of pain and disability in people with persistent low back pain: a randomized controlled trial. Arthritis Care Res. 2011;63(11):1576-1583.",
+    usedFor: "Ten weeks of tai chi reduced pain and disability in persistent low back pain."
+  },
+  {
+    id: "wieland2017",
+    citation:
+      "Wieland LS, Skoetz N, Pilkington K, Vempati R, D'Adamo CR, Berman BM. Yoga treatment for chronic non-specific low back pain. Cochrane Database Syst Rev. 2017;1:CD010671.",
+    usedFor: "Yoga gives small-to-moderate improvements in back function, similar to other exercise."
+  },
+  {
+    id: "vickers2018",
+    citation:
+      "Vickers AJ, Vertosick EA, Lewith G, et al. Acupuncture for chronic pain: update of an individual patient data meta-analysis. J Pain. 2018;19(5):455-474.",
+    usedFor: "Acupuncture beats sham and no acupuncture for chronic pain, but the gap over sham is small."
   }
 ] as const satisfies readonly Source[];
 

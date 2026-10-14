@@ -49,7 +49,8 @@ const overflow = (page) => page.evaluate(() => document.documentElement.scrollWi
   await page.getByRole("button", { name: "Thumb (right)", exact: true }).click();
   check((await page.locator("ol li p.text-xl").first().textContent())?.trim() === "C6", "map: thumb with tingling ranks C6 first");
   await page.getByRole("link", { name: /See it on the spine/ }).first().click();
-  check((await page.locator("article h2").first().textContent())?.includes("C6 nerve root"), "map → spine deep link opens the C6 root");
+  const rootHeading = page.locator("article h2", { hasText: "C6 nerve root" });
+  check(await rootHeading.first().waitFor({ timeout: 5000 }).then(() => true, () => false), "map → spine deep link opens the C6 root");
   await page.getByRole("banner").getByRole("link", { name: "Español" }).click();
   check((await page.getByRole("banner").innerText()).includes("Dónde duele"), "language switch keeps the page and turns the header Spanish");
   check((await page.getAttribute("html", "lang")) === "es", "<html lang> follows the language");

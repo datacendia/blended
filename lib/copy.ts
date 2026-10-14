@@ -118,6 +118,10 @@ export const COPY = {
     noReflex: { en: "No reliable reflex", es: "Sin reflejo fiable" },
     typicalDisc: { en: "Usual culprit", es: "Causa habitual" },
     areas: { en: "Areas on the body map", es: "Zonas en el mapa corporal" },
+    territory: { en: "Where this root usually reaches", es: "Hasta dónde suele llegar esta raíz" },
+    usualArea: { en: "Usual area", es: "Zona habitual" },
+    sharedArea: { en: "Often shared with a neighbouring root", es: "A menudo compartida con una raíz vecina" },
+    referredArea: { en: "Pain often felt here, though it isn't this root's skin area", es: "A menudo se siente dolor aquí, aunque no es la zona de piel de esta raíz" },
     openMap: { en: "Open the body map", es: "Abrir el mapa corporal" },
     backToVertebra: { en: "Back to {v}", es: "Volver a {v}" },
     zoom: { en: "Zoom", es: "Zoom" },
@@ -355,7 +359,26 @@ export const COPY = {
     watchFor: { en: "Watch for", es: "Atención a" },
     yes: { en: "Yes", es: "Sí" },
     no: { en: "No", es: "No" },
-    questionsTitle: { en: "Questions to ask any clinician", es: "Preguntas para cualquier profesional" }
+    questionsTitle: { en: "Questions to ask any clinician", es: "Preguntas para cualquier profesional" },
+    compareTitle: { en: "Physiotherapist, chiropractor or osteopath?", es: "¿Fisioterapeuta, quiropráctico u osteópata?" },
+    compareLead: {
+      en: "The three main hands-on professions, side by side. Each one's approach is described the way that profession sees itself; what research shows is kept in its own row, with sources. Regulation of chiropractors and osteopaths varies by country.",
+      es: "Las tres principales profesiones de terapia manual, lado a lado. El enfoque de cada una se describe como esa profesión se ve a sí misma; lo que muestra la investigación va en su propia fila, con fuentes. La regulación de quiroprácticos y osteópatas varía según el país."
+    },
+    rowApproach: { en: "Core approach", es: "Enfoque principal" },
+    rowMethods: { en: "Main treatments", es: "Tratamientos principales" },
+    rowBestFor: { en: "Best suited for", es: "Más indicado para" },
+    rowResearch: { en: "What research shows", es: "Lo que muestra la investigación" },
+    practicesTitle: { en: "Movement and traditional practices", es: "Prácticas de movimiento y tradicionales" },
+    practicesLead: {
+      en: "Unlike the hands-on professions, these are mostly things you do yourself: self-directed, preventive and long-term. Each comes with its tradition's own explanation, shown here as tradition. What trials have measured is shown separately.",
+      es: "A diferencia de las profesiones de terapia manual, estas son sobre todo cosas que haces tú: autodirigidas, preventivas y a largo plazo. Cada una trae la explicación de su tradición, mostrada aquí como tradición. Lo que han medido los ensayos se muestra aparte."
+    },
+    rowPractice: { en: "What it involves", es: "En qué consiste" },
+    rowTradition: { en: "The traditional idea", es: "La idea tradicional" },
+    rowGoodFor: { en: "Good for", es: "Útil para" },
+    rowSafety: { en: "Safety", es: "Seguridad" },
+    seeCard: { en: "Who they are and what to watch for", es: "Quiénes son y a qué prestar atención" }
   },
   evidence: {
     title: { en: "What works for neck pain and a trapped nerve", es: "Qué funciona para el dolor de cuello y el nervio atrapado" },

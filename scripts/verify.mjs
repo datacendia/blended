@@ -102,9 +102,9 @@ console.log("The tools give their answers");
 {
   const { page } = await open("/es/spine/", { width: 390 });
   await page.goto(`${base}/es/spine/#root-C7`);
-  await page.waitForTimeout(200);
-  const heading = await page.locator("article h2").first().textContent();
-  /C7/.test(heading ?? "") ? pass("spine: #root-C7 deep link opens the C7 root") : fail(`spine: deep link showed ${heading}`);
+  // Wait for the state rather than a fixed delay: a sleep only hides a race.
+  const opened = await page.locator("article h2", { hasText: "C7" }).first().waitFor({ timeout: 5000 }).then(() => true, () => false);
+  opened ? pass("spine: #root-C7 deep link opens the C7 root") : fail(`spine: deep link showed ${await page.locator("article h2").first().textContent()}`);
   const labels = await page.locator("svg text").allTextContents();
   labels.includes("D7") ? pass("spine: Spanish labels thoracic vertebrae D1-D12") : fail("spine: no D7 label in Spanish");
   await page.close();

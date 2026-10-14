@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState, useSyncExternalStore } from "react";
 import { Callout } from "@/components/ui/Callout";
 import { COPY, fill } from "@/lib/copy";
 import { vertebraLabel, type Locale } from "@/lib/i18n";
@@ -10,6 +10,7 @@ import { REGIONS } from "@/lib/regions";
 import { rootById, rootForDisc, rootsExitingAbove, rootsExitingBelow, type Root } from "@/lib/roots";
 import { autonomicFor, nextVertebra, REGION_INFO, vertebraById, type SpineRegion } from "@/lib/spine";
 import { PLACED, ROOT_MARKS, regionExtent, SPINE_VIEWBOX, type Placed } from "@/lib/spineGeometry";
+import { RootTerritory } from "./RootTerritory";
 
 type Selection = { kind: "vertebra"; id: string } | { kind: "root"; id: string };
 type Zoom = "whole" | "cervical" | "thoracic" | "lumbar" | "pelvis";
@@ -40,25 +41,34 @@ function parseHash(hash: string): Selection | null {
   return vertebraById(id) ? { kind: "vertebra", id } : null;
 }
 
+function subscribeHash(onChange: () => void): () => void {
+  window.addEventListener("hashchange", onChange);
+  return () => window.removeEventListener("hashchange", onChange);
+}
+
+function zoomFor(selection: Selection): Zoom {
+  const region = selection.kind === "root" ? rootById(selection.id)?.region : vertebraById(selection.id)?.region;
+  if (region === "cervical" || region === "thoracic" || region === "lumbar") return region;
+  return region ? "pelvis" : "whole";
+}
+
+const DEFAULT_SELECTION: Selection = { kind: "vertebra", id: "C6" };
+
 export function SpineExplorer({ locale }: { locale: Locale }) {
   const c = COPY.spine;
-  const [selection, setSelection] = useState<Selection>({ kind: "vertebra", id: "C6" });
-  const [zoom, setZoom] = useState<Zoom>("whole");
-
-  useEffect(() => {
-    // Deep links from the body map (#root-C6) arrive after hydration.
-    const apply = () => {
-      const parsed = parseHash(window.location.hash);
-      if (!parsed) return;
-      setSelection(parsed);
-      const region = parsed.kind === "root" ? rootById(parsed.id)?.region : vertebraById(parsed.id)?.region;
-      if (region === "cervical" || region === "thoracic" || region === "lumbar") setZoom(region);
-      else if (region) setZoom("pelvis");
-    };
-    apply();
-    window.addEventListener("hashchange", apply);
-    return () => window.removeEventListener("hashchange", apply);
-  }, []);
+  // A deep link from the body map (#root-C6) lives in the address bar, which
+  // is external state, so it is read with useSyncExternalStore. Copying it
+  // into state from an effect rendered C6-the-vertebra first and swapped to
+  // the root a frame later; CI caught the flash. A tap overrides the link
+  // until the link changes, which is why each choice remembers its hash.
+  const hash = useSyncExternalStore(subscribeHash, () => window.location.hash, () => "");
+  const linked = useMemo(() => parseHash(hash), [hash]);
+  const [picked, setPicked] = useState<{ hash: string; selection: Selection } | null>(null);
+  const [zoomed, setZoomed] = useState<{ hash: string; zoom: Zoom } | null>(null);
+  const selection = picked?.hash === hash ? picked.selection : (linked ?? DEFAULT_SELECTION);
+  const zoom = zoomed?.hash === hash ? zoomed.zoom : linked ? zoomFor(linked) : "whole";
+  const setSelection = (next: Selection) => setPicked({ hash, selection: next });
+  const setZoom = (next: Zoom) => setZoomed({ hash, zoom: next });
 
   const highlightedRoots = useMemo(() => {
     if (selection.kind === "root") return new Set([selection.id]);
@@ -412,6 +422,7 @@ function RootPanel({ id, locale, onVertebra }: { id: string; locale: Locale; onV
           </div>
         )}
       </dl>
+      <RootTerritory rootId={root.id} locale={locale} />
       {root.note && <Callout tone="info">{root.note[locale]}</Callout>}
       {areas.length > 0 && (
         <section>

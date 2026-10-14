@@ -1,6 +1,8 @@
 import { RED_FLAGS, triage } from "@/lib/redflags";
 import { TREATMENTS } from "@/lib/evidence";
 import { EXAMS } from "@/lib/exams";
+import { CLINICIANS } from "@/lib/clinicians";
+import { HANDS_ON, PRACTICES } from "@/lib/practices";
 import { SOURCES } from "@/lib/sources";
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
@@ -38,9 +40,29 @@ describe("evidence", () => {
     for (const t of TREATMENTS) expect(t.sources.length).toBeGreaterThan(0);
   });
 
+  it("cites at least one source for every therapy and practice", () => {
+    for (const t of [...HANDS_ON, ...PRACTICES]) expect({ id: t.id, sources: t.sources.length > 0 }).toEqual({ id: t.id, sources: true });
+  });
+
+  it("gives every practice a research verdict, kept apart from its tradition", () => {
+    for (const p of PRACTICES) {
+      expect(p.findings.length).toBeGreaterThan(0);
+      expect(p.tradition.en).not.toBe(p.research.en);
+    }
+  });
+
+  it("links each hands-on therapy to a clinician card that exists", () => {
+    for (const t of HANDS_ON) expect(CLINICIANS.some((c) => c.id === t.clinicianId)).toBe(true);
+  });
+
   it("cites only sources that exist", () => {
     const known = new Set(SOURCES.map((s) => s.id));
-    const cited = [...TREATMENTS.flatMap((t) => t.sources), ...Object.values(EXAMS).flatMap((e) => e.sources)];
+    const cited = [
+      ...TREATMENTS.flatMap((t) => t.sources),
+      ...Object.values(EXAMS).flatMap((e) => e.sources),
+      ...HANDS_ON.flatMap((t) => t.sources),
+      ...PRACTICES.flatMap((p) => p.sources)
+    ];
     for (const id of cited) expect(known.has(id)).toBe(true);
   });
 

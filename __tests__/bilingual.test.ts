@@ -4,6 +4,7 @@ import { TREATMENTS, VERDICT_LABEL } from "@/lib/evidence";
 import { EXAMS, SHOULDER_ABDUCTION_RELIEF } from "@/lib/exams";
 import { swapLocaleInPath, vertebraLabel } from "@/lib/i18n";
 import { CONDITIONS, exampleState } from "@/lib/outcomes";
+import { HANDS_ON, PRACTICES } from "@/lib/practices";
 import { SEGMENT_LABEL, SEGMENT_MEANING } from "@/lib/posture";
 import { RED_FLAGS, TRIAGE_ACTION } from "@/lib/redflags";
 import { REGIONS, SYMPTOMS } from "@/lib/regions";
@@ -17,7 +18,8 @@ import { AUTONOMIC, REGION_INFO, VERTEBRAE } from "@/lib/spine";
  */
 const EVERYTHING = {
   COPY, ROOTS, VERTEBRAE, REGION_INFO, AUTONOMIC, REGIONS, SYMPTOMS, RED_FLAGS, TRIAGE_ACTION, CLINICIANS,
-  UNIVERSAL_QUESTIONS, TREATMENTS, VERDICT_LABEL, EXAMS, SHOULDER_ABDUCTION_RELIEF, CONDITIONS, SEGMENT_LABEL, SEGMENT_MEANING
+  UNIVERSAL_QUESTIONS, TREATMENTS, VERDICT_LABEL, EXAMS, SHOULDER_ABDUCTION_RELIEF, CONDITIONS, SEGMENT_LABEL, SEGMENT_MEANING,
+  HANDS_ON, PRACTICES
 };
 
 interface Pair {
