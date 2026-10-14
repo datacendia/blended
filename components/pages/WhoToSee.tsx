@@ -6,15 +6,22 @@ import { VerdictBadge } from "@/components/ui/VerdictBadge";
 import { CLINICIANS, UNIVERSAL_QUESTIONS } from "@/lib/clinicians";
 import { COPY } from "@/lib/copy";
 import type { L, Locale } from "@/lib/i18n";
-import { HANDS_ON, PRACTICES } from "@/lib/practices";
+import { HANDS_ON, PRACTICES, type PracticeGroup } from "@/lib/practices";
+
+/** Practices split by who does the work, which is also roughly how the evidence splits. */
+const GROUPS: { id: PracticeGroup; label: L }[] = [
+  { id: "active", label: COPY.guide.groupActive },
+  { id: "passive", label: COPY.guide.groupPassive }
+];
 
 /**
- * Cards in the two comparisons share rows through CSS subgrid on wide
+ * Cards in the profession comparison share rows through CSS subgrid on wide
  * screens, so "Best suited for" sits at the same height in all three and the
  * page reads as a table. On a phone they stack as ordinary cards.
  */
 export function WhoToSeeContent({ locale }: { locale: Locale }) {
   const c = COPY.clinicians;
+  const g = COPY.guide;
   const label = (text: L) => <p className="text-xs font-semibold uppercase tracking-wide text-ink-3">{text[locale]}</p>;
 
   return (
@@ -102,45 +109,32 @@ export function WhoToSeeContent({ locale }: { locale: Locale }) {
       <section aria-labelledby="practices">
         <h2 id="practices" className="text-2xl font-semibold tracking-tight">{c.practicesTitle[locale]}</h2>
         <p className="mt-2 max-w-3xl text-ink-2">{c.practicesLead[locale]}</p>
-        <ul className="mt-6 grid gap-4 lg:grid-cols-3 lg:grid-rows-[repeat(6,auto)]">
-          {PRACTICES.map((p) => (
-            <li key={p.id} id={p.id} className="grid scroll-mt-24 gap-4 rounded-2xl border border-line bg-surface p-5 lg:row-span-6 lg:grid-rows-subgrid">
-              <div>
-                <h3 className="text-lg font-semibold">{p.name[locale]}</h3>
-                <p className="text-sm text-ink-3">{p.origin[locale]}</p>
-              </div>
-              <div className="space-y-1">
-                {label(c.rowPractice)}
-                <p>{p.practice[locale]}</p>
-              </div>
-              <div className="space-y-1 rounded-lg border border-dashed border-line px-3 py-2">
-                {label(c.rowTradition)}
-                <p className="italic text-ink-2">{p.tradition[locale]}</p>
-              </div>
-              <div className="space-y-2 rounded-xl bg-raised p-3">
-                {label(c.rowResearch)}
-                <ul className="flex flex-wrap gap-2">
-                  {p.findings.map((f) => (
-                    <li key={f.use.en} className="flex items-center gap-1.5 text-xs">
-                      <VerdictBadge verdict={f.verdict} locale={locale} />
-                      <span className="text-ink-2">{f.use[locale]}</span>
-                    </li>
-                  ))}
-                </ul>
-                <p className="text-sm">{p.research[locale]}</p>
-                <SourceList ids={p.sources} locale={locale} />
-              </div>
-              <div className="space-y-1">
-                {label(c.rowGoodFor)}
-                <p className="text-ink-2">{p.goodFor[locale]}</p>
-              </div>
-              <div className="space-y-1">
-                {label(c.rowSafety)}
-                <p className="text-ink-2">{p.safety[locale]}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <p className="mt-2 max-w-3xl text-sm text-ink-3">{g.groupNote[locale]}</p>
+        {GROUPS.map((group) => (
+          <div key={group.id} className="mt-8">
+            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-3">{group.label[locale]}</h3>
+            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {PRACTICES.filter((p) => p.group === group.id).map((p) => (
+                <li key={p.id} id={p.id} className="flex scroll-mt-24 flex-col rounded-2xl border border-line bg-surface p-5">
+                  <h4 className="text-lg font-semibold">{p.name[locale]}</h4>
+                  <p className="text-sm text-ink-3">{p.origin[locale]}</p>
+                  <ul className="mt-3 space-y-1.5">
+                    {p.findings.map((f) => (
+                      <li key={f.use.en} className="flex items-center gap-2 text-xs">
+                        <VerdictBadge verdict={f.verdict} locale={locale} />
+                        <span className="text-ink-2">{f.use[locale]}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="mt-3 text-sm text-ink-2">{p.goodFor[locale]}</p>
+                  <Link href={guideHref(locale, p.id)} className="mt-auto self-start pt-4 text-sm font-medium text-accent underline underline-offset-2">
+                    {c.openGuide[locale]} →
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </section>
     </>
   );

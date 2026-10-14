@@ -188,6 +188,52 @@ export const SOURCES = [
     citation:
       "Patel KC, Gross A, Graham N, et al. Massage for mechanical neck disorders. Cochrane Database Syst Rev. 2012;(9):CD004871.",
     usedFor: "Massage for neck pain: effects uncertain, no recommendation possible."
+  },
+  {
+    id: "macpherson2015",
+    citation:
+      "MacPherson H, Tilbrook H, Richmond S, et al. Alexander Technique lessons or acupuncture sessions for persons with chronic neck pain: a randomized trial. Ann Intern Med. 2015;163(9):653-662.",
+    usedFor: "In chronic neck pain, 12 acupuncture sessions or 20 Alexander lessons reduced pain at 12 months compared with usual care."
+  },
+  {
+    id: "little2008",
+    citation:
+      "Little P, Lewith G, Webley F, et al. Randomised controlled trial of Alexander technique lessons, exercise, and massage (ATEAM) for chronic and recurrent back pain. BMJ. 2008;337:a884.",
+    usedFor: "Alexander lessons helped chronic and recurrent back pain; six lessons plus exercise gave about 70% of the benefit of 24 lessons."
+  },
+  {
+    id: "yamato2015",
+    citation:
+      "Yamato TP, Maher CG, Saragiotto BT, et al. Pilates for low back pain. Cochrane Database Syst Rev. 2015;(7):CD010265.",
+    usedFor: "Pilates beats minimal care for chronic low back pain, but is not clearly better than other exercise."
+  },
+  {
+    id: "gattie2017",
+    citation:
+      "Gattie E, Cleland JA, Snodgrass S. The effectiveness of trigger point dry needling for musculoskeletal conditions by physical therapists: a systematic review and meta-analysis. J Orthop Sports Phys Ther. 2017;47(3):133-149.",
+    usedFor: "Dry needling by physios reduced musculoskeletal pain more than no treatment or sham, up to 12 weeks, at very low to moderate certainty."
+  },
+  {
+    id: "white2004",
+    citation:
+      "White A. A cumulative review of the range and incidence of significant adverse events associated with acupuncture. Acupunct Med. 2004;22(3):122-133.",
+    usedFor: "Serious harm from acupuncture is rare; a punctured lung is among the most reported serious events."
+  },
+  {
+    id: "cao2012",
+    citation: "Cao H, Li X, Liu J. An updated review of the efficacy of cupping therapy. PLoS One. 2012;7(2):e31793.",
+    usedFor: "Many cupping trials report benefit for pain, but most are low quality."
+  },
+  {
+    id: "ernst2009",
+    citation: "Ernst E. Is reflexology an effective intervention? A systematic review of randomised controlled trials. Med J Aust. 2009;191(5):263-266.",
+    usedFor: "No convincing evidence that reflexology treats any medical condition."
+  },
+  {
+    id: "nhmrc2015",
+    citation:
+      "National Health and Medical Research Council. NHMRC Information Paper: Evidence on the effectiveness of homeopathy for treating health conditions. Canberra: NHMRC; 2015.",
+    usedFor: "No health condition for which there is reliable evidence that homeopathy works."
   }
 ] as const satisfies readonly Source[];
 

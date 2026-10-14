@@ -14,8 +14,8 @@ import { WarningSignsContent } from "@/components/pages/WarningSigns";
 import { WhatWorksContent } from "@/components/pages/WhatWorks";
 import { WhoToSeeContent } from "@/components/pages/WhoToSee";
 import { SiteShell } from "@/components/ui/SiteShell";
-import { CLINICIANS } from "@/lib/clinicians";
 import { BRAND, COPY } from "@/lib/copy";
+import { guidePage } from "@/lib/guides";
 import type { L, Locale } from "@/lib/i18n";
 import { parsePath, pathFor, routeFromHash, RouterContext, type Route } from "./router";
 
@@ -53,7 +53,7 @@ function setHash(hash: string | null) {
 export function App() {
   const [path, setPath] = useState(() => pathFor(initialRoute()));
   const route = parsePath(path) ?? { locale: "en" as const, slug: "" };
-  const guideName = route.id ? CLINICIANS.find((c) => c.id === route.id)?.name : undefined;
+  const guideName = route.id ? guidePage(route.id)?.name : undefined;
   const page = PAGE_CONTENT[route.slug] ?? PAGE_CONTENT[""]!;
   const title = guideName ?? page.title;
 

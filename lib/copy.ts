@@ -88,7 +88,10 @@ export const COPY = {
     toolTracker: { en: "Score pain and function weekly. RootAtlas measures change against published thresholds, works out what each point of improvement cost, and flags when to ask questions.", es: "Puntúa dolor y función cada semana. RootAtlas mide el cambio frente a umbrales publicados, calcula cuánto costó cada punto de mejoría y avisa cuándo preguntar." },
     toolFlags: { en: "The signs that mean stop tracking and get medical help — with why each one matters.", es: "Los signos que significan dejar de registrar y buscar ayuda médica, y por qué importa cada uno." },
     toolEvidence: { en: "Manipulation, exercise, traction, collars, surgery, X-rays: what the research actually supports, with sources.", es: "Manipulación, ejercicio, tracción, collarín, cirugía, radiografías: lo que la investigación respalda de verdad, con fuentes." },
-    toolClinicians: { en: "Chiropractor, physio, osteopath, physiatrist, neurologist: who can diagnose, who can order a scan, and what to ask each.", es: "Quiropráctico, fisioterapeuta, osteópata, fisiatra, neurólogo: quién puede diagnosticar, quién puede pedir una resonancia y qué preguntar a cada uno." },
+    toolClinicians: {
+      en: "Eight professions and ten practices, from physio and chiropractor to acupuncture, tai chi, Pilates and the huesero: what each does, what the research says, and what to ask.",
+      es: "Ocho profesiones y diez prácticas, del fisioterapeuta y el quiropráctico a la acupuntura, el taichí, el pilates y el huesero: qué hace cada uno, qué dice la investigación y qué preguntar."
+    },
     privacyTitle: { en: "Private by construction", es: "Privado por diseño" },
     privacyBody: {
       en: "There is no account and no server. Your scores and reports live in this browser only. Export them to a file whenever you like; delete them with one button.",
@@ -381,13 +384,12 @@ export const COPY = {
     rowMethods: { en: "Main treatments", es: "Tratamientos principales" },
     rowBestFor: { en: "Best suited for", es: "Más indicado para" },
     rowResearch: { en: "What research shows", es: "Lo que muestra la investigación" },
-    practicesTitle: { en: "Movement and traditional practices", es: "Prácticas de movimiento y tradicionales" },
+    practicesTitle: { en: "Acupuncture, tai chi and other practices", es: "Acupuntura, taichí y otras prácticas" },
     practicesLead: {
-      en: "Unlike the hands-on professions, these are mostly things you do yourself: self-directed, preventive and long-term. Each comes with its tradition's own explanation, shown here as tradition. What trials have measured is shown separately.",
-      es: "A diferencia de las profesiones de terapia manual, estas son sobre todo cosas que haces tú: autodirigidas, preventivas y a largo plazo. Cada una trae la explicación de su tradición, mostrada aquí como tradición. Lo que han medido los ensayos se muestra aparte."
+      en: "Movement, traditional and alternative practices you're likely to be offered, from well supported to not supported at all. Each has a full guide: what a good first session looks like, what the practice claims, what trials found, and what it means for a trapped nerve.",
+      es: "Prácticas de movimiento, tradicionales y alternativas que probablemente te ofrecerán, desde las bien respaldadas hasta las que no tienen ningún respaldo. Cada una tiene una guía completa: cómo es una buena primera sesión, qué dice la práctica, qué encontraron los ensayos y qué significa para un nervio atrapado."
     },
-    rowPractice: { en: "What it involves", es: "En qué consiste" },
-    rowTradition: { en: "The traditional idea", es: "La idea tradicional" },
+    rowTradition: { en: "What the practice itself says", es: "Lo que dice la propia práctica" },
     rowGoodFor: { en: "Good for", es: "Útil para" },
     rowSafety: { en: "Safety", es: "Seguridad" },
     seeCard: { en: "Full guide: first visit, warning signs, questions", es: "Guía completa: primera visita, señales de alarma, preguntas" },
@@ -418,7 +420,19 @@ export const COPY = {
     training: { en: "Training", es: "Formación" },
     check: { en: "How to check", es: "Cómo comprobarlo" },
     others: { en: "Other guides", es: "Otras guías" },
-    back: { en: "All professions", es: "Todas las profesiones" }
+    professions: { en: "Professions", es: "Profesiones" },
+    practices: { en: "Practices", es: "Prácticas" },
+    practiceEyebrow: { en: "Who to see · practice guide", es: "A quién acudir · guía de práctica" },
+    whoDelivers: { en: "Who offers it", es: "Quién la ofrece" },
+    firstSession: { en: "What a good first session includes", es: "Qué incluye una buena primera sesión" },
+    neckTitle: { en: "With a trapped nerve in the neck", es: "Con un nervio atrapado en el cuello" },
+    groupActive: { en: "You learn it and keep doing it", es: "La aprendes y la sigues haciendo tú" },
+    groupPassive: { en: "It's done to you, or taken", es: "Te la aplican, o la tomas" },
+    groupNote: {
+      en: "Guidelines for neck pain put active, exercise-based care at the centre of every plan. Treatments done to you can be a useful extra.",
+      es: "Las guías para el dolor de cuello ponen el tratamiento activo, basado en ejercicio, en el centro de todo plan. Los tratamientos que te aplican pueden ser un complemento útil."
+    },
+    back: { en: "All professions and practices", es: "Todas las profesiones y prácticas" }
   },
   organs: {
     title: { en: "How your organs are wired", es: "Cómo están conectados tus órganos" },

@@ -2,7 +2,7 @@
 
 import { createContext, useContext } from "react";
 import { isLocale, type Locale } from "@/lib/i18n";
-import { guideById } from "@/lib/guides";
+import { guidePage } from "@/lib/guides";
 import { PAGES } from "@/lib/nav";
 
 /**
@@ -14,7 +14,7 @@ import { PAGES } from "@/lib/nav";
 export interface Route {
   locale: Locale;
   slug: string;
-  /** A page under the slug: only the clinician guides (/es/who-to-see/physio/) have one. */
+  /** A page under the slug: only the guides (/es/who-to-see/physio/, /es/who-to-see/acupuncture/) have one. */
   id?: string;
 }
 
@@ -27,7 +27,7 @@ export function parsePath(path: string): Route | null {
   const slug = m[2] ?? "";
   if (!SLUGS.includes(slug)) return null;
   if (m[3] === undefined) return { locale, slug };
-  return slug === "who-to-see" && guideById(m[3]) ? { locale, slug, id: m[3] } : null;
+  return slug === "who-to-see" && guidePage(m[3]) ? { locale, slug, id: m[3] } : null;
 }
 
 export function pathFor(route: Route): string {

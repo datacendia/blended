@@ -19,7 +19,7 @@ import { chromium } from "playwright";
 const OUT = join(process.cwd(), "out");
 const SHOTS = join(process.cwd(), ".verify");
 const PORT = 4321;
-const PAGES = ["", "spine", "vertebra", "organs", "map", "report", "tracker", "warning-signs", "who-to-see", "who-to-see/chiropractor", "what-works", "about"];
+const PAGES = ["", "spine", "vertebra", "organs", "map", "report", "tracker", "warning-signs", "who-to-see", "who-to-see/chiropractor", "who-to-see/acupuncture", "what-works", "about"];
 const TYPES = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".svg": "image/svg+xml", ".png": "image/png", ".ico": "image/x-icon", ".txt": "text/plain", ".json": "application/json" };
 
 if (!existsSync(OUT)) {
@@ -163,6 +163,18 @@ console.log("The tools give their answers");
   await boxes.nth(0).check();
   await boxes.nth(1).check();
   (await page.getByText(`2 of ${await boxes.count()}`).count()) > 0 ? pass("guide: first-visit checklist counts ticks") : fail("guide: checklist count missing");
+  await page.close();
+}
+{
+  const { page } = await open("/es/who-to-see/", { width: 390 });
+  await page.locator("#huesero").getByRole("link", { name: /Guía completa/ }).click();
+  await page.waitForURL(/\/es\/who-to-see\/huesero\/$/);
+  (await page.getByText(/no encontró ensayos controlados/).count()) > 0
+    ? pass("practices: the huesero guide says no trials were found (es)")
+    : fail("practices: huesero guide missing its evidence line");
+  await page.getByRole("link", { name: "Acupuntura", exact: true }).click();
+  await page.waitForURL(/\/es\/who-to-see\/acupuncture\/$/);
+  (await page.getByText("Dolor de cuello crónico").count()) > 0 ? pass("practices: acupuncture shows its neck-pain verdict") : fail("practices: acupuncture neck verdict missing");
   await page.close();
 }
 {

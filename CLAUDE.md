@@ -46,8 +46,9 @@ build (`standalone/`) render the same components. A new page needs its
 `app/[locale]/<slug>/page.tsx`, an entry in `lib/nav.ts`, and an entry in
 `standalone/App.tsx` (the standalone build fails without it). Mark it
 `primary` in `lib/nav.ts` only if it belongs in the desktop header (seven
-fit). The guides under `who-to-see/<id>/` are the one nested route; the
-standalone router knows about them by name. Components may
+fit). The guides under `who-to-see/<id>/` (professions and practices, listed
+in `GUIDE_PAGES`) are the one nested route; the standalone router reads the
+same list. Components may
 use `next/link` and `usePathname` only; anything else from Next needs a shim.
 
 ## Conventions

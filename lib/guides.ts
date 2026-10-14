@@ -1,4 +1,6 @@
+import { CLINICIANS } from "./clinicians";
 import type { L } from "./i18n";
+import { PRACTICES } from "./practices";
 import type { SourceId } from "./sources";
 
 /**
@@ -316,4 +318,18 @@ export const GUIDES: readonly Guide[] = [
 
 export function guideById(id: string): Guide | undefined {
   return GUIDES.find((g) => g.id === id);
+}
+
+/**
+ * Every page under /who-to-see/<id>/: the professions, then the practices
+ * (acupuncture, tai chi, the huesero...). One list so the static build, the
+ * single-file router and the "other guides" links can't disagree.
+ */
+export const GUIDE_PAGES: readonly { id: string; name: L; kind: "clinician" | "practice" }[] = [
+  ...CLINICIANS.map((c) => ({ id: c.id, name: c.name, kind: "clinician" as const })),
+  ...PRACTICES.map((p) => ({ id: p.id, name: p.name, kind: "practice" as const }))
+];
+
+export function guidePage(id: string): (typeof GUIDE_PAGES)[number] | undefined {
+  return GUIDE_PAGES.find((g) => g.id === id);
 }

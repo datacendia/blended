@@ -104,6 +104,8 @@ const overflow = (page) => page.evaluate(() => document.documentElement.scrollWi
 {
   const { page, context } = await open({ hash: "#es-who-to-see/neurologist", width: 390 });
   check((await page.locator("h1").first().textContent())?.includes("Neurólogo"), "#es-who-to-see/neurologist opens that guide");
+  await page.getByRole("link", { name: "Taichí", exact: true }).click();
+  check((await page.locator("h1").first().textContent())?.includes("Taichí"), "a guide links on to the tai chi practice guide");
   check((await overflow(page)) <= 0, "guide has no sideways scroll at 390px");
   await context.close();
 }
