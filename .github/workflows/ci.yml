@@ -1,0 +1,64 @@
+# Typecheck, lint and unit tests are the fast job. The browser job builds the
+# static site and drives every page in both languages at phone and desktop
+# width — the checks that catch a page throwing on load, sideways scrolling at
+# 390px, or a Spanish page with an English header.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: Typecheck, lint, tests and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+
+  browser:
+    name: The built site, in a real browser
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build
+      - run: npm run verify
+
+  audit:
+    name: Dependency advisories (shipped code)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      # Production dependencies only. The site is static HTML: jest, eslint and
+      # tailwind run at build time and never ship, and their transitive
+      # advisories have no path to a visitor.
+      - run: npm audit --omit=dev --audit-level=high
