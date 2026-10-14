@@ -68,7 +68,10 @@ const body = `<div id="root"></div>
 <script>${script}</script>`;
 
 // Hosts that wrap the page set the body to 14px; the site is designed at 16px.
-const styles = `<style>${minCss}</style>\n<style>body{font-size:16px;margin:0}</style>`;
+// A fragment goes into an embedded viewer, which blocks downloads and
+// printing: hide the buttons that would do nothing there.
+const embedOnly = fragment ? "[data-embed-hide]{display:none!important}" : "";
+const styles = `<style>${minCss}</style>\n<style>body{font-size:16px;margin:0}${embedOnly}</style>`;
 
 const html = fragment
   ? `<title>RootAtlas</title>\n${styles}\n${body}\n`

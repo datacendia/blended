@@ -132,7 +132,8 @@ export function Tracker({ locale }: { locale: Locale }) {
           }} className="rounded-full border border-line bg-surface px-4 py-2 text-sm font-medium">
           {c.loadExample[locale]}
         </button>
-        <button type="button" onClick={download} className="rounded-full border border-line bg-surface px-4 py-2 text-sm font-medium">
+        {/* data-embed-hide: embedded viewers block downloads and printing, so the fragment build hides these. */}
+        <button type="button" data-embed-hide onClick={download} className="rounded-full border border-line bg-surface px-4 py-2 text-sm font-medium">
           {c.export[locale]}
         </button>
         <button type="button" onClick={() => fileInput.current?.click()} className="rounded-full border border-line bg-surface px-4 py-2 text-sm font-medium">
@@ -149,7 +150,7 @@ export function Tracker({ locale }: { locale: Locale }) {
             e.target.value = "";
           }}
         />
-        <button type="button" onClick={() => window.print()} className="rounded-full border border-line bg-surface px-4 py-2 text-sm font-medium">
+        <button type="button" data-embed-hide onClick={() => window.print()} className="rounded-full border border-line bg-surface px-4 py-2 text-sm font-medium">
           {c.print[locale]}
         </button>
         <button
