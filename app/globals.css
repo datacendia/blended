@@ -1,0 +1,162 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Colour tokens as RGB triplets so Tailwind's /<alpha> works on them.
+ * The palette borrows the clinic-poster greens and the warm lumbar yellow
+ * patients have already seen on the wall, so the spine reads as familiar.
+ */
+:root {
+  color-scheme: light;
+  --bg: 246 247 244;
+  --surface: 255 255 255;
+  --raised: 236 241 237;
+  --ink: 18 32 28;
+  --ink-2: 60 78 72;
+  --ink-3: 98 114 108;
+  --line: 214 222 216;
+  --accent: 15 118 92;
+  --accent-ink: 255 255 255;
+  --cervical: 126 196 168;
+  --thoracic: 34 88 74;
+  --lumbar: 212 200 110;
+  --sacral: 72 160 132;
+  --coccyx: 28 58 50;
+  --good: 22 128 70;
+  --warn: 176 108 0;
+  --bad: 190 40 40;
+  /* Chart series, validated with the dataviz palette checker against the
+     surface (CVD ΔE 24.7, contrast >= 3:1). Not status colours. */
+  --series-pain: 235 104 52;
+  --series-function: 42 120 214;
+  /* The two autonomic systems reuse that validated pair: they are drawn as
+     lines on the same surface, and they must never be confused. */
+  --symp: 235 104 52;
+  --parasymp: 42 120 214;
+  /* Anatomy: bone, nerve and disc in the colours clinic posters use. */
+  --bone: 236 229 211;
+  --nerve: 214 156 20;
+  --disc: 116 164 210;
+}
+
+/* Dark follows the system unless the page is explicitly told otherwise
+   (data-theme on <html>, as embedded viewers set it). Same values twice so
+   an explicit choice wins in both directions. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: 12 18 16;
+    --surface: 20 28 25;
+    --raised: 28 39 35;
+    --ink: 228 237 232;
+    --ink-2: 178 194 187;
+    --ink-3: 132 150 143;
+    --line: 44 58 52;
+    --accent: 86 200 160;
+    --accent-ink: 8 22 17;
+    --cervical: 118 196 164;
+    --thoracic: 64 146 124;
+    --lumbar: 214 202 116;
+    --sacral: 86 178 148;
+    --coccyx: 148 172 162;
+    --good: 84 196 128;
+    --warn: 232 172 64;
+    --bad: 244 108 108;
+    --series-pain: 217 89 38;
+    --series-function: 57 135 229;
+    --symp: 217 89 38;
+    --parasymp: 57 135 229;
+    --bone: 92 96 86;
+    --nerve: 232 186 64;
+    --disc: 86 140 196;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: 12 18 16;
+  --surface: 20 28 25;
+  --raised: 28 39 35;
+  --ink: 228 237 232;
+  --ink-2: 178 194 187;
+  --ink-3: 132 150 143;
+  --line: 44 58 52;
+  --accent: 86 200 160;
+  --accent-ink: 8 22 17;
+  --cervical: 118 196 164;
+  --thoracic: 64 146 124;
+  --lumbar: 214 202 116;
+  --sacral: 86 178 148;
+  --coccyx: 148 172 162;
+  --good: 84 196 128;
+  --warn: 232 172 64;
+  --bad: 244 108 108;
+  --series-pain: 217 89 38;
+  --series-function: 57 135 229;
+  --symp: 217 89 38;
+  --parasymp: 57 135 229;
+  --bone: 92 96 86;
+  --nerve: 232 186 64;
+  --disc: 86 140 196;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: rgb(var(--bg));
+  color: rgb(var(--ink));
+  overflow-x: hidden;
+}
+
+:focus-visible {
+  outline: 2px solid rgb(var(--accent));
+  outline-offset: 2px;
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Tappable SVG regions: keyboard focus must be as visible as a hover. */
+.tap {
+  cursor: pointer;
+  transition: fill 120ms ease, opacity 120ms ease;
+}
+.tap:focus {
+  outline: none;
+}
+.tap:focus-visible {
+  stroke: rgb(var(--accent));
+  stroke-width: 2.5;
+}
+
+input[type="range"] {
+  accent-color: rgb(var(--accent));
+}
+
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+}
+
+.print-only {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
