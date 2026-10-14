@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { ReportDecoder } from "@/components/report/ReportDecoder";
-import { PageHeader } from "@/components/ui/PageHeader";
+import { ReportContent } from "@/components/pages/Report";
 import { COPY } from "@/lib/copy";
 import { isLocale } from "@/lib/i18n";
 import { localeFrom, type LocaleParams } from "@/lib/params";
@@ -11,11 +10,5 @@ export async function generateMetadata({ params }: LocaleParams): Promise<Metada
 }
 
 export default async function ReportPage({ params }: LocaleParams) {
-  const locale = await localeFrom(params);
-  return (
-    <>
-      <PageHeader title={COPY.report.title[locale]} lead={COPY.report.lead[locale]} />
-      <ReportDecoder locale={locale} />
-    </>
-  );
+  return <ReportContent locale={await localeFrom(params)} />;
 }

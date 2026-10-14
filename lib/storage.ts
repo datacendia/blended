@@ -1,4 +1,4 @@
-import { z } from "zod";
+import * as z from "zod/mini";
 import { EMPTY_STATE, type TrackerState } from "./outcomes";
 import type { Scan } from "./posture";
 
@@ -8,60 +8,64 @@ import type { Scan } from "./posture";
  *
  * Imported files are validated with zod before they replace anything: an
  * export edited by hand, or a file from a different app, is refused rather
- * than half-loaded.
+ * than half-loaded. It is zod/mini on purpose: the full build added 443 KB to
+ * every page that imports this file, for checks that need 18 KB.
  */
 export const TRACKER_KEY = "rootatlas.tracker.v1";
 export const SCANS_KEY = "rootatlas.scans.v1";
 
-const score = z.number().min(0).max(10).nullable();
-const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
+const between = (min: number, max: number) => z.number().check(z.minimum(min), z.maximum(max));
+const wholeBetween = (min: number, max: number) => z.int().check(z.minimum(min), z.maximum(max));
+const text = (max: number) => z.string().check(z.maxLength(max));
+const score = z.nullable(between(0, 10));
+const isoDate = z.string().check(z.regex(/^\d{4}-\d{2}-\d{2}$/));
 
 export const trackerSchema = z.object({
   version: z.literal(1),
   plan: z.object({
     condition: z.enum(["neck-arm", "neck", "back-leg", "back", "other"]),
-    clinician: z.string().max(40),
-    sessionsPurchased: z.number().int().min(1).max(500).nullable(),
-    totalPrice: z.number().min(0).max(1_000_000).nullable(),
+    clinician: text(40),
+    sessionsPurchased: z.nullable(wholeBetween(1, 500)),
+    totalPrice: z.nullable(between(0, 1_000_000)),
     currency: z.enum(["PEN", "USD", "EUR", "GBP"]),
     startDate: z.union([isoDate, z.literal("")]),
-    symptomsSince: isoDate.nullable()
+    symptomsSince: z.nullable(isoDate)
   }),
-  activityNames: z.array(z.string().max(80)).max(3),
+  activityNames: z.array(text(80)).check(z.maxLength(3)),
   checkIns: z
     .array(
       z.object({
-        id: z.string().max(40),
+        id: text(40),
         date: isoDate,
-        sessionsUsed: z.number().int().min(0).max(500),
+        sessionsUsed: wholeBetween(0, 500),
         limbPain: score,
         axialPain: score,
-        activities: z.array(score).max(3),
+        activities: z.array(score).check(z.maxLength(3)),
         numbness: z.enum(["none", "sometimes", "constant"]),
-        flags: z.array(z.string().max(40)).max(40),
-        note: z.string().max(500).optional()
+        flags: z.array(text(40)).check(z.maxLength(40)),
+        note: z.optional(text(500))
       })
     )
-    .max(500)
+    .check(z.maxLength(500))
 });
 
-const reading = z.object({ t: z.number().min(-100).max(100).nullable(), a: z.number().min(-180).max(180).nullable() });
+const reading = z.object({ t: z.nullable(between(-100, 100)), a: z.nullable(between(-180, 180)) });
 const lateral = z.object({ head: reading, shoulder: reading, hip: reading, knee: reading });
 const frontal = z.object({ head: reading, shoulder: reading, ribcage: reading, hip: reading });
 
 export const scanSchema = z.object({
-  id: z.string().max(40),
+  id: text(40),
   date: isoDate,
   right: lateral,
   left: lateral,
   anterior: frontal,
   posterior: frontal,
-  printedAverage: z.object({ head: reading, shoulder: reading, hip: reading, knee: reading }).partial().optional(),
-  effectiveHeadKg: z.number().min(0).max(100).nullable().optional(),
-  baselineHeadKg: z.number().min(0).max(100).nullable().optional()
+  printedAverage: z.optional(z.partial(z.object({ head: reading, shoulder: reading, hip: reading, knee: reading }))),
+  effectiveHeadKg: z.optional(z.nullable(between(0, 100))),
+  baselineHeadKg: z.optional(z.nullable(between(0, 100)))
 });
 
-export const scansSchema = z.array(scanSchema).max(100);
+export const scansSchema = z.array(scanSchema).check(z.maxLength(100));
 
 /**
  * localStorage, with a memory fallback. When a browser refuses storage

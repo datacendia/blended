@@ -63,6 +63,7 @@ export function Tracker({ locale }: { locale: Locale }) {
   const [edited, setDraft] = useState<Draft | null>(null);
   const draft = edited ?? draftFrom(state, today);
   const [importError, setImportError] = useState(false);
+  const [deleteArmed, setDeleteArmed] = useState(false);
   const fileInput = useRef<HTMLInputElement>(null);
 
   const update = (next: TrackerState) => {
@@ -154,14 +155,21 @@ export function Tracker({ locale }: { locale: Locale }) {
         <button
           type="button"
           onClick={() => {
-            if (window.confirm(c.confirmDelete[locale])) {
-              clearAll();
-              setDraft(null);
+            // Two taps instead of window.confirm(): embedded viewers block
+            // native dialogs, and a dialog that silently returns false would
+            // make this button do nothing.
+            if (!deleteArmed) {
+              setDeleteArmed(true);
+              window.setTimeout(() => setDeleteArmed(false), 5000);
+              return;
             }
+            clearAll();
+            setDraft(null);
+            setDeleteArmed(false);
           }}
-          className="rounded-full border border-bad/40 px-4 py-2 text-sm font-medium text-bad"
+          className={`rounded-full border px-4 py-2 text-sm font-medium ${deleteArmed ? "border-bad bg-bad text-surface" : "border-bad/40 text-bad"}`}
         >
-          {c.deleteAll[locale]}
+          {deleteArmed ? c.confirmDelete[locale] : c.deleteAll[locale]}
         </button>
         <p className="basis-full text-xs text-ink-3">{c.exampleNote[locale]}</p>
       </div>

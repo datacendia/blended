@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { RedFlagCheck } from "@/components/flags/RedFlagCheck";
-import { PageHeader } from "@/components/ui/PageHeader";
+import { WarningSignsContent } from "@/components/pages/WarningSigns";
 import { COPY } from "@/lib/copy";
 import { isLocale } from "@/lib/i18n";
 import { localeFrom, type LocaleParams } from "@/lib/params";
@@ -11,11 +10,5 @@ export async function generateMetadata({ params }: LocaleParams): Promise<Metada
 }
 
 export default async function WarningSignsPage({ params }: LocaleParams) {
-  const locale = await localeFrom(params);
-  return (
-    <>
-      <PageHeader title={COPY.flags.title[locale]} lead={COPY.flags.lead[locale]} />
-      <RedFlagCheck locale={locale} />
-    </>
-  );
+  return <WarningSignsContent locale={await localeFrom(params)} />;
 }

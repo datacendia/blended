@@ -128,11 +128,20 @@ console.log("The tools give their answers");
   (await page.getByText(/Checkpoint: 6 sessions/).count()) > 0
     ? pass("tracker: data survives a reload (localStorage)")
     : fail("tracker: data lost on reload");
-  page.on("dialog", (d) => d.accept());
   await page.getByRole("button", { name: "Delete all my data" }).click();
+  await page.getByRole("button", { name: "Tap again to delete everything" }).click();
   (await page.getByText(/Checkpoint: 6 sessions/).count()) === 0
     ? pass("tracker: delete removes everything")
     : fail("tracker: delete left data behind");
+  await page.close();
+}
+{
+  const { page } = await open("/es/", { width: 390 });
+  const menu = page.locator("header details");
+  await menu.locator("summary").click();
+  await menu.getByRole("link", { name: "Informe postural" }).click();
+  await page.waitForURL(/\/es\/report\/$/);
+  !(await menu.evaluate((d) => d.open)) ? pass("phone menu closes after choosing a page") : fail("phone menu stayed open after navigating");
   await page.close();
 }
 {

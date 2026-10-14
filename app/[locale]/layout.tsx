@@ -1,8 +1,7 @@
 import "../globals.css";
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
-import { SiteFooter } from "@/components/ui/SiteFooter";
-import { SiteHeader } from "@/components/ui/SiteHeader";
+import { SiteShell } from "@/components/ui/SiteShell";
 import { COPY } from "@/lib/copy";
 import { isLocale, LOCALES } from "@/lib/i18n";
 
@@ -42,14 +41,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <body className="flex min-h-screen flex-col font-sans antialiased">
-        <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-surface focus:px-3 focus:py-2">
-          {COPY.nav.skip[locale]}
-        </a>
-        <SiteHeader locale={locale} />
-        <main id="main" className="mx-auto w-full max-w-6xl flex-1 px-4 pb-16 pt-6 sm:px-6">
-          {children}
-        </main>
-        <SiteFooter locale={locale} />
+        <SiteShell locale={locale}>{children}</SiteShell>
       </body>
     </html>
   );

@@ -317,7 +317,7 @@ export const COPY = {
     importFailed: { en: "That file isn't a RootAtlas export, or it has been changed. Nothing was replaced.", es: "Ese archivo no es una exportación de RootAtlas, o ha sido modificado. No se reemplazó nada." },
     print: { en: "Print for my clinician", es: "Imprimir para mi terapeuta" },
     deleteAll: { en: "Delete all my data", es: "Borrar todos mis datos" },
-    confirmDelete: { en: "Delete every check-in and saved scan from this device?", es: "¿Borrar todos los registros y escáneres guardados de este dispositivo?" },
+    confirmDelete: { en: "Tap again to delete everything", es: "Toca de nuevo para borrar todo" },
     storageOff: {
       en: "This browser isn't letting RootAtlas save. Everything works, but will be forgotten when you close the page — export a file to keep it.",
       es: "Este navegador no permite guardar a RootAtlas. Todo funciona, pero se olvidará al cerrar la página; exporta un archivo para conservarlo."

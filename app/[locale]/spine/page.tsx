@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { SpineExplorer } from "@/components/spine/SpineExplorer";
-import { PageHeader } from "@/components/ui/PageHeader";
+import { SpineContent } from "@/components/pages/Spine";
 import { COPY } from "@/lib/copy";
 import { isLocale } from "@/lib/i18n";
 import { localeFrom, type LocaleParams } from "@/lib/params";
@@ -11,11 +10,5 @@ export async function generateMetadata({ params }: LocaleParams): Promise<Metada
 }
 
 export default async function SpinePage({ params }: LocaleParams) {
-  const locale = await localeFrom(params);
-  return (
-    <>
-      <PageHeader title={COPY.spine.title[locale]} lead={COPY.spine.lead[locale]} />
-      <SpineExplorer locale={locale} />
-    </>
-  );
+  return <SpineContent locale={await localeFrom(params)} />;
 }

@@ -4,6 +4,7 @@ import type { Locale } from "@/lib/i18n";
 import { href, PAGES } from "@/lib/nav";
 import { LocaleSwitch } from "./LocaleSwitch";
 import { Logo } from "./Logo";
+import { MobileMenu } from "./MobileMenu";
 
 export function SiteHeader({ locale }: { locale: Locale }) {
   const links = PAGES.filter((p) => p.slug && p.slug !== "about");
@@ -27,10 +28,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
         </nav>
         <div className="ml-auto flex items-center gap-2 lg:ml-2">
           <LocaleSwitch locale={locale} label={COPY.nav.language[locale]} />
-          <details className="relative lg:hidden">
-            <summary className="cursor-pointer list-none rounded-md border border-line px-3 py-1.5 text-sm [&::-webkit-details-marker]:hidden">
-              {COPY.nav.menu[locale]}
-            </summary>
+          <MobileMenu label={COPY.nav.menu[locale]}>
             <nav aria-label="Main" className="absolute right-0 mt-2 w-60 rounded-xl border border-line bg-surface p-2 shadow-lg">
               <ul className="flex flex-col text-sm">
                 {PAGES.map((p) => (
@@ -42,7 +40,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
                 ))}
               </ul>
             </nav>
-          </details>
+          </MobileMenu>
         </div>
       </div>
     </header>

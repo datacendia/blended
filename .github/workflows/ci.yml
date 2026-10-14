@@ -46,6 +46,8 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run build
       - run: npm run verify
+      - name: The single-file build, in a real browser
+        run: npm run standalone && npm run verify:standalone
 
   audit:
     name: Dependency advisories (shipped code)

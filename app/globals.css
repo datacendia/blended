@@ -32,8 +32,11 @@
   --series-function: 42 120 214;
 }
 
+/* Dark follows the system unless the page is explicitly told otherwise
+   (data-theme on <html>, as embedded viewers set it). Same values twice so
+   an explicit choice wins in both directions. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     color-scheme: dark;
     --bg: 12 18 16;
     --surface: 20 28 25;
@@ -55,6 +58,29 @@
     --series-pain: 217 89 38;
     --series-function: 57 135 229;
   }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: 12 18 16;
+  --surface: 20 28 25;
+  --raised: 28 39 35;
+  --ink: 228 237 232;
+  --ink-2: 178 194 187;
+  --ink-3: 132 150 143;
+  --line: 44 58 52;
+  --accent: 86 200 160;
+  --accent-ink: 8 22 17;
+  --cervical: 118 196 164;
+  --thoracic: 64 146 124;
+  --lumbar: 214 202 116;
+  --sacral: 86 178 148;
+  --coccyx: 148 172 162;
+  --good: 84 196 128;
+  --warn: 232 172 64;
+  --bad: 244 108 108;
+  --series-pain: 217 89 38;
+  --series-function: 57 135 229;
 }
 
 html {

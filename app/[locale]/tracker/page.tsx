@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { Tracker } from "@/components/tracker/Tracker";
-import { PageHeader } from "@/components/ui/PageHeader";
+import { TrackerContent } from "@/components/pages/Tracker";
 import { COPY } from "@/lib/copy";
 import { isLocale } from "@/lib/i18n";
 import { localeFrom, type LocaleParams } from "@/lib/params";
@@ -11,11 +10,5 @@ export async function generateMetadata({ params }: LocaleParams): Promise<Metada
 }
 
 export default async function TrackerPage({ params }: LocaleParams) {
-  const locale = await localeFrom(params);
-  return (
-    <>
-      <PageHeader title={COPY.tracker.title[locale]} lead={COPY.tracker.lead[locale]} />
-      <Tracker locale={locale} />
-    </>
-  );
+  return <TrackerContent locale={await localeFrom(params)} />;
 }

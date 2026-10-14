@@ -38,7 +38,14 @@ C1-C7 exit above their vertebra, C8 below C7, everything after below its own.
 npm run validate   # typecheck + lint + tests — before every commit
 npm run build      # static site → out/
 npm run verify     # drive out/ in Chromium, both languages, 390px and 1280px
+npm run standalone && npm run verify:standalone   # the one-file build, driven
 ```
+
+Page bodies live in `components/pages/` so the Next routes and the single-file
+build (`standalone/`) render the same components. A new page needs its
+`app/[locale]/<slug>/page.tsx`, an entry in `lib/nav.ts`, and an entry in
+`standalone/App.tsx` (the standalone build fails without it). Components may
+use `next/link` and `usePathname` only; anything else from Next needs a shim.
 
 ## Conventions
 

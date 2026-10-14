@@ -58,6 +58,8 @@ started this. Run against itself, it shows:
   a missing side, mismatched `{placeholders}`, or an untranslated copy-paste.
 - **Every claim has a source.** `lib/sources.ts` holds 20 citations; tests fail
   if a treatment has none, cites an unknown id, or a source is cited nowhere.
+- **Small pages.** Import validation uses `zod/mini` (18 KB) rather than full
+  zod, which added 443 KB to every page that imports storage.
 - **Guarantees are structural.** Tests ban `dangerouslySetInnerHTML` and inline
   phrases in components, and check that pages and the nav agree.
 - **Thresholds are named, not buried.** MCIDs (`mcidFor`), the trial-of-care
@@ -71,9 +73,19 @@ npm install
 npm run dev              # http://localhost:3000
 npm run validate         # typecheck + lint + 717 tests
 npm run build            # static site in out/
-npm run verify           # drives out/ in Chromium: 36 renders + 12 tool checks
+npm run verify           # drives out/ in Chromium: 36 renders + 13 tool checks
+npm run standalone       # the whole site as one HTML file: dist-standalone/rootatlas.html
+npm run verify:standalone  # drives that file: links, deep links, language, phone menu, storage
 npm run check-domains    # RDAP lookups for the name shortlist
 ```
+
+### The single-file build
+
+`npm run standalone` compiles the same page components into one 446 KB HTML
+file with everything inline. It runs offline, opens from an email attachment,
+and works as an embedded preview. Only `next/link` and `next/navigation` are
+swapped, for an in-memory router in `standalone/`; the Next build stays the
+real site. Pass `--fragment` for hosts that add their own `<html>` wrapper.
 
 `verify` uses Playwright's Chromium; set `CHROMIUM_PATH` to use another.
 
