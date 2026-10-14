@@ -3,6 +3,20 @@ import { COPY } from "@/lib/copy";
 import { TREATMENTS, VERDICT_LABEL } from "@/lib/evidence";
 import { EXAMS, SHOULDER_ABDUCTION_RELIEF } from "@/lib/exams";
 import { GUIDES } from "@/lib/guides";
+import { BALANCE_COPY, BALANCE_TEXT, STANCES } from "@/lib/diagrams/balance";
+import { CUPPING_COPY, MARK_TEXT } from "@/lib/diagrams/cupping";
+import { DILUTION_COPY } from "@/lib/diagrams/dilution";
+import { FOOT_COPY, NERVES, ZONES } from "@/lib/diagrams/foot";
+import { HEAD_LEVER_COPY } from "@/lib/diagrams/headLever";
+import { MIMIC_COPY, MIMICS } from "@/lib/diagrams/mimics";
+import { GRADES, MOBILISATION_COPY } from "@/lib/diagrams/mobilisation";
+import { ADVICE_LABEL, DEMANDS, NECK_LOAD_COPY, POSES } from "@/lib/diagrams/neckLoad";
+import { MUSCLES, NECK_MUSCLE_COPY } from "@/lib/diagrams/neckMuscles";
+import { LAYER_NAME, NEEDLE_COPY, RISK_TEXT } from "@/lib/diagrams/needle";
+import { GLIDE_COPY, GLIDE_TEXT } from "@/lib/diagrams/nerveGlide";
+import { PATHWAY_COPY, PATHWAY_STAGES } from "@/lib/diagrams/pathway";
+import { DIAGRAM_INFO } from "@/lib/diagrams/registry";
+import { SURGERY_COPY, SURGERY_OPTIONS } from "@/lib/diagrams/surgery";
 import { swapLocaleInPath, vertebraLabel } from "@/lib/i18n";
 import { ORGANS, PARA_NERVE, POSTER_CHECKS, POSTER_VERDICT, RELAYS, SEGMENT_NOTES } from "@/lib/organs";
 import { CONDITIONS, exampleState } from "@/lib/outcomes";
@@ -23,7 +37,10 @@ const EVERYTHING = {
   COPY, ROOTS, VERTEBRAE, REGION_INFO, AUTONOMIC, REGIONS, SYMPTOMS, RED_FLAGS, TRIAGE_ACTION, CLINICIANS,
   UNIVERSAL_QUESTIONS, TREATMENTS, VERDICT_LABEL, EXAMS, SHOULDER_ABDUCTION_RELIEF, CONDITIONS, SEGMENT_LABEL, SEGMENT_MEANING,
   HANDS_ON, PRACTICES, ORGANS, RELAYS, PARA_NERVE, SEGMENT_NOTES, POSTER_CHECKS, POSTER_VERDICT, KIND_INFO, PARTS, CAUSES,
-  POSITIONS, ROOM_LABEL, GUIDES
+  POSITIONS, ROOM_LABEL, GUIDES, DIAGRAM_INFO, PATHWAY_STAGES, PATHWAY_COPY, MIMICS, MIMIC_COPY, GLIDE_TEXT, GLIDE_COPY, GRADES,
+  MOBILISATION_COPY, SURGERY_OPTIONS, SURGERY_COPY, MUSCLES, NECK_MUSCLE_COPY, STANCES, BALANCE_TEXT, BALANCE_COPY, DEMANDS, POSES,
+  ADVICE_LABEL, NECK_LOAD_COPY, HEAD_LEVER_COPY, LAYER_NAME, RISK_TEXT, NEEDLE_COPY, MARK_TEXT, CUPPING_COPY, NERVES, ZONES, FOOT_COPY,
+  DILUTION_COPY
 };
 
 interface Pair {

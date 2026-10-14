@@ -38,6 +38,7 @@
   --bone: 236 229 211;
   --nerve: 214 156 20;
   --disc: 116 164 210;
+  --bruise: 118 52 150;
 }
 
 /* Dark follows the system unless the page is explicitly told otherwise
@@ -70,6 +71,7 @@
     --bone: 92 96 86;
     --nerve: 232 186 64;
     --disc: 86 140 196;
+    --bruise: 176 120 210;
   }
 }
 
@@ -99,6 +101,7 @@
   --bone: 92 96 86;
   --nerve: 232 186 64;
   --disc: 86 140 196;
+  --bruise: 176 120 210;
 }
 
 html {

@@ -19,7 +19,7 @@ import { chromium } from "playwright";
 const OUT = join(process.cwd(), "out");
 const SHOTS = join(process.cwd(), ".verify");
 const PORT = 4321;
-const PAGES = ["", "spine", "vertebra", "organs", "map", "report", "tracker", "warning-signs", "who-to-see", "who-to-see/chiropractor", "who-to-see/acupuncture", "what-works", "about"];
+const PAGES = ["", "spine", "vertebra", "organs", "map", "report", "tracker", "warning-signs", "who-to-see", "who-to-see/chiropractor", "who-to-see/acupuncture", "who-to-see/gp", "who-to-see/reflexology", "what-works", "about"];
 const TYPES = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".svg": "image/svg+xml", ".png": "image/png", ".ico": "image/x-icon", ".txt": "text/plain", ".json": "application/json" };
 
 if (!existsSync(OUT)) {
@@ -159,7 +159,8 @@ console.log("The tools give their answers");
   await page.locator("#physio").getByRole("link", { name: /Full guide/ }).click();
   await page.waitForURL(/\/en\/who-to-see\/physio\/$/);
   (await page.locator("h1").textContent())?.includes("Physiotherapist") ? pass("who to see: card opens the physiotherapist guide") : fail("who to see: guide link broken");
-  const boxes = page.getByRole("checkbox");
+  // The care-pathway diagram above has checkboxes of its own; count only the visit checklist's.
+  const boxes = page.locator('section[aria-labelledby="first-visit"]').getByRole("checkbox");
   await boxes.nth(0).check();
   await boxes.nth(1).check();
   (await page.getByText(`2 of ${await boxes.count()}`).count()) > 0 ? pass("guide: first-visit checklist counts ticks") : fail("guide: checklist count missing");
@@ -175,6 +176,44 @@ console.log("The tools give their answers");
   await page.getByRole("link", { name: "Acupuntura", exact: true }).click();
   await page.waitForURL(/\/es\/who-to-see\/acupuncture\/$/);
   (await page.getByText("Dolor de cuello crónico").count()) > 0 ? pass("practices: acupuncture shows its neck-pain verdict") : fail("practices: acupuncture neck verdict missing");
+  await page.close();
+}
+{
+  const { page } = await open("/es/who-to-see/gp/", { width: 390 });
+  const pathway = page.locator("#diagram-care-pathway");
+  await pathway.locator('input[type="range"]').fill("8");
+  (await pathway.getByText("Seis semanas sin una mejoría clara").count()) > 0
+    ? pass("care pathway: 8 weeks without improvement points to a medical review (es)")
+    : fail("care pathway: no medical review at 8 weeks");
+  await pathway.getByText(/Alguna señal de alarma/).click();
+  (await pathway.getByRole("link", { name: "Abrir las señales de alarma" }).count()) > 0
+    ? pass("care pathway: a warning sign sends you to the warning signs")
+    : fail("care pathway: warning sign did not escalate");
+  await page.close();
+}
+{
+  const { page } = await open("/en/who-to-see/acupuncture/", { width: 1280 });
+  const needle = page.locator("#diagram-needle-depth");
+  await needle.getByRole("button", { name: "Average", exact: true }).click();
+  await needle.locator('input[type="range"]').fill("100");
+  (await needle.getByText("Risk of a punctured lung").count()) > 0 ? pass("needle: full depth, straight, average build reaches the lung") : fail("needle: no lung warning at full depth");
+  await needle.getByRole("button", { name: "Angled", exact: true }).click();
+  (await needle.getByText("Risk of a punctured lung").count()) === 0 ? pass("needle: angled, it stays short of the lung") : fail("needle: angled still reaches the lung");
+  await page.close();
+}
+{
+  const { page } = await open("/en/who-to-see/homeopathy/", { width: 390 });
+  await page.getByRole("button", { name: "30C", exact: true }).click();
+  (await page.getByText(/about 1 in 10\^36/).count()) > 0 ? pass("dilution: 30C leaves about a 1 in 10^36 chance of one molecule") : fail("dilution: 30C chance wrong");
+  await page.getByRole("button", { name: "200C", exact: true }).click();
+  (await page.getByText(/10\^376/).count()) > 0 ? pass("dilution: 200C is stated, not shown as infinity") : fail("dilution: 200C chance wrong");
+  await page.close();
+}
+{
+  const { page } = await open("/en/who-to-see/reflexology/", { width: 1280 });
+  await page.getByRole("button", { name: "What the nerves say" }).click();
+  (await page.locator("svg text", { hasText: "Medial plantar" }).count()) > 0 ? pass("foot map: nerve view draws the medial plantar territory") : fail("foot map: nerve view missing");
+  (await page.getByText("The chart's 'neck' is wired to the low back", { exact: false }).count()) > 0 ? pass("foot map: the 'neck' point traces to L4-L5") : fail("foot map: neck note missing");
   await page.close();
 }
 {

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { FirstVisitCheck } from "@/components/guide/FirstVisitCheck";
+import { GuideDiagrams } from "@/components/guide/GuideDiagrams";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SourceList } from "@/components/ui/SourceList";
 import { VerdictBadge } from "@/components/ui/VerdictBadge";
@@ -46,6 +47,7 @@ function ClinicianGuide({ locale, id }: { locale: Locale; id: string }) {
         <Fact label={cl.prescribe[locale]} value={clinician.canPrescribe ? cl.yes[locale] : cl.no[locale]} />
         <Fact label={cl.imaging[locale]} value={clinician.canOrderImaging[locale]} />
       </dl>
+      <GuideDiagrams id={id} locale={locale} />
 
       <div className="grid gap-10 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
         <div className="min-w-0 space-y-10">
@@ -91,6 +93,7 @@ function PracticeGuide({ practice: p, locale }: { practice: Practice; locale: Lo
         <Fact label={c.whoDelivers[locale]} value={p.whoDelivers[locale]} />
         <div className="rounded-full bg-raised px-3 py-1 text-ink-2">{p.origin[locale]}</div>
       </dl>
+      <GuideDiagrams id={p.id} locale={locale} />
 
       <div className="grid gap-10 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
         <div className="min-w-0 space-y-10">

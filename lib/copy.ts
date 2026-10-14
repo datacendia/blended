@@ -423,6 +423,7 @@ export const COPY = {
     professions: { en: "Professions", es: "Profesiones" },
     practices: { en: "Practices", es: "Prácticas" },
     practiceEyebrow: { en: "Who to see · practice guide", es: "A quién acudir · guía de práctica" },
+    diagramEyebrow: { en: "Interactive diagram", es: "Diagrama interactivo" },
     whoDelivers: { en: "Who offers it", es: "Quién la ofrece" },
     firstSession: { en: "What a good first session includes", es: "Qué incluye una buena primera sesión" },
     neckTitle: { en: "With a trapped nerve in the neck", es: "Con un nervio atrapado en el cuello" },

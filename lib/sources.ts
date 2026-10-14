@@ -234,6 +234,12 @@ export const SOURCES = [
     citation:
       "National Health and Medical Research Council. NHMRC Information Paper: Evidence on the effectiveness of homeopathy for treating health conditions. Canberra: NHMRC; 2015.",
     usedFor: "No health condition for which there is reliable evidence that homeopathy works."
+  },
+  {
+    id: "padua2016",
+    citation:
+      "Padua L, Coraci D, Erra C, et al. Carpal tunnel syndrome: clinical features, diagnosis, and management. Lancet Neurol. 2016;15(12):1273-1284.",
+    usedFor: "Carpal tunnel syndrome: where it is felt, night symptoms, and how it is confirmed."
   }
 ] as const satisfies readonly Source[];
 
