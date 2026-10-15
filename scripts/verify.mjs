@@ -199,6 +199,28 @@ console.log("The tools give their answers");
   (await needle.getByText("Risk of a punctured lung").count()) > 0 ? pass("needle: full depth, straight, average build reaches the lung") : fail("needle: no lung warning at full depth");
   await needle.getByRole("button", { name: "Angled", exact: true }).click();
   (await needle.getByText("Risk of a punctured lung").count()) === 0 ? pass("needle: angled, it stays short of the lung") : fail("needle: angled still reaches the lung");
+  await needle.getByRole("button", { name: /^4\s*Middle of the shoulder blade/ }).click();
+  await needle.getByRole("button", { name: "Straight in", exact: true }).click();
+  (await needle.getByText("Stopped by bone").count()) > 0 ? pass("needle: over the shoulder blade, the needle stops on bone") : fail("needle: shoulder blade doesn't stop the needle");
+  await page.close();
+}
+{
+  const { page } = await open("/en/who-to-see/massage/", { width: 1280 });
+  const chart = page.locator("#diagram-neck-muscles");
+  await chart.getByRole("region", { name: "Key: tap any muscle" }).getByRole("button", { name: /^12\s*Anterior scalene/ }).click();
+  const chips = await chart.getByRole("link", { name: /^C[5-7]$/ }).allTextContents();
+  chips.join(",") === "C5,C6,C7" ? pass("neck muscles: the scalenes' pain map matches the C5-C7 roots") : fail(`neck muscles: scalene roots were ${chips.join(",")}`);
+  (await chart.locator("svg text", { hasText: "Nerves to the arm" }).count()) > 0 ? pass("neck muscles: picking a scalene turns to a view with the nerves to the arm") : fail("neck muscles: scalene view missing");
+  await chart.getByRole("button", { name: "Pressure guide", exact: true }).click();
+  (await chart.locator("figcaption", { hasText: "No pressure" }).count()) > 0 ? pass("neck muscles: the pressure guide has a no-pressure key") : fail("neck muscles: pressure key missing");
+  await page.close();
+}
+{
+  const { page } = await open("/es/who-to-see/cupping/", { width: 390 });
+  const cup = page.locator("#diagram-cupping-skin");
+  await cup.getByRole("button", { name: "Fuerte", exact: true }).click();
+  await cup.locator('section input[type="range"]').fill("14");
+  (await cup.getByText("Días después: 14").count()) > 0 ? pass("cupping: the marks can be followed for two weeks (es)") : fail("cupping: days slider missing");
   await page.close();
 }
 {

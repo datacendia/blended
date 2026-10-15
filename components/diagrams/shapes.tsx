@@ -8,3 +8,9 @@ export function ShapeEl({ shape, ...props }: { shape: Shape } & SVGProps<SVGElem
   if (shape.kind === "rect") return <rect x={shape.x} y={shape.y} width={shape.w} height={shape.h} rx={2} {...p} />;
   return <path d={shape.d} {...p} />;
 }
+
+/**
+ * Labels sit on top of coloured areas and outlines; a surface-coloured stroke
+ * behind each glyph keeps them readable in both schemes.
+ */
+export const HALO = { fill: "rgb(var(--ink))", stroke: "rgb(var(--surface))", strokeWidth: 2.5, paintOrder: "stroke", strokeLinejoin: "round" } as const;

@@ -1,12 +1,13 @@
 import { balanceState, convexHull, margin, polygonArea, STANCES } from "@/lib/diagrams/balance";
-import { bruising, markLevel } from "@/lib/diagrams/cupping";
+import { bruising, DAYS_MAX, FADE_DAYS, markLevel, markStrength } from "@/lib/diagrams/cupping";
 import { chanceLog10, chanceOfOne, expectedLog10, scientific } from "@/lib/diagrams/dilution";
 import { FOOT_BOX, NERVE_AREAS, NERVES, STRUCTURES, zoneById, ZONES, zonesFor } from "@/lib/diagrams/foot";
 import { HEAD_ANGLES, modelLoad } from "@/lib/diagrams/headLever";
 import { MIMICS } from "@/lib/diagrams/mimics";
 import { GRADES } from "@/lib/diagrams/mobilisation";
 import { DEMANDS, POSES } from "@/lib/diagrams/neckLoad";
-import { layerAt, NEEDLE_LENGTH, riskAt, tipDepth, type Build } from "@/lib/diagrams/needle";
+import { lookalikeRoots, muscleById, MUSCLES, NECK_BOX, PAINT_ORDER } from "@/lib/diagrams/neckMuscles";
+import { boneDepth, layerAt, layers, NEEDLE_LENGTH, riskAt, SITES, tipDepth, type Build } from "@/lib/diagrams/needle";
 import { glideKind, nerveTension } from "@/lib/diagrams/nerveGlide";
 import { likelyStage, PATHWAY_STAGES, REVIEW_WEEKS } from "@/lib/diagrams/pathway";
 import { GUIDE_DIAGRAMS } from "@/lib/diagrams/registry";
@@ -144,6 +145,45 @@ describe("head-forward lever", () => {
   });
 });
 
+describe("neck muscle chart", () => {
+  it("numbers every muscle once, 1 to n, and draws each in at least one view", () => {
+    expect(MUSCLES.map((m) => m.n)).toEqual(MUSCLES.map((_, i) => i + 1));
+    expect(new Set(MUSCLES.map((m) => m.id)).size).toBe(MUSCLES.length);
+    for (const m of MUSCLES) expect({ id: m.id, views: Object.keys(m.views).length > 0 }).toEqual({ id: m.id, views: true });
+  });
+
+  it("paints every muscle, each exactly once", () => {
+    expect([...PAINT_ORDER].sort()).toEqual(MUSCLES.map((m) => m.id).sort());
+  });
+
+  it("puts every number inside the figure", () => {
+    for (const m of MUSCLES)
+      for (const v of Object.values(m.views)) {
+        const [x, y] = v!.at;
+        expect({ id: m.id, inside: x > 6 && x < NECK_BOX.width - 6 && y > 6 && y < NECK_BOX.height - 6 }).toEqual({ id: m.id, inside: true });
+      }
+  });
+
+  it("maps pain only to real body-map regions, and only where a pain map is given", () => {
+    const known = new Set(REGIONS.map((r) => r.id));
+    for (const m of MUSCLES) {
+      for (const r of m.refers) expect({ id: m.id, region: r, known: known.has(r) }).toEqual({ id: m.id, region: r, known: true });
+      expect({ id: m.id, mapped: m.felt !== null }).toEqual({ id: m.id, mapped: m.refers.length > 0 });
+    }
+  });
+
+  it("matches the scalenes to the C5-C7 pattern, the pectoralis minor to C8 and the upper trapezius to the upper neck", () => {
+    for (const id of ["anterior-scalene", "middle-scalene", "posterior-scalene"]) expect(lookalikeRoots(muscleById(id)!)).toEqual(["C5", "C6", "C7"]);
+    expect(lookalikeRoots(muscleById("pectoralis-minor")!)).toContain("C8");
+    expect(lookalikeRoots(muscleById("upper-trapezius")!)).toEqual(["C2", "C3"]);
+  });
+
+  it("never allows firm pressure next to the carotid artery or the nerves to the arm", () => {
+    for (const id of ["scm", "anterior-scalene", "middle-scalene", "posterior-scalene", "suboccipitals"]) expect(muscleById(id)!.pressure).toBe("gentle");
+    for (const id of ["infrahyoids", "longus-colli"]) expect(muscleById(id)!.pressure).toBe("avoid");
+  });
+});
+
 describe("needle depth", () => {
   const deepest = (build: Build, angle: "straight" | "angled") => layerAt(tipDepth(1, angle), build);
   it("reaches the lung with a full-length straight needle in a slim or average build", () => {
@@ -158,6 +198,32 @@ describe("needle depth", () => {
     expect(layerAt(tipDepth(0.02, "straight"), "average")).toBe("skin");
     expect(tipDepth(1, "straight")).toBe(NEEDLE_LENGTH);
   });
+
+  it("numbers the sites 1 to n and keeps them on the map", () => {
+    expect(SITES.map((s) => s.n)).toEqual(SITES.map((_, i) => i + 1));
+    for (const s of SITES) expect({ id: s.id, inside: s.at[0] > 150 && s.at[0] < 260 && s.at[1] > 0 && s.at[1] < 230 }).toEqual({ id: s.id, inside: true });
+  });
+
+  it("starts every site at the skin, and ends it at the pleura wherever the lung is beneath", () => {
+    for (const s of SITES) {
+      expect(s.profile[0]![0]).toBe("skin");
+      expect({ id: s.id, end: s.profile[s.profile.length - 1]![0] === "pleura" }).toEqual({ id: s.id, end: s.lungBeneath });
+    }
+  });
+
+  it("stops the needle on bone over the shoulder blade and beside the spine, in every build", () => {
+    for (const site of ["blade-centre", "next-to-spine"] as const)
+      for (const b of ["slim", "average", "larger"] as const) {
+        const d = tipDepth(1, "straight", boneDepth(b, site));
+        expect(riskAt(layerAt(d, b, site))).toBe("bone");
+      }
+  });
+
+  it("has no bone between the needle and the top of the lung at the top of the shoulder", () => {
+    expect(boneDepth("slim", "top-shoulder")).toBe(Infinity);
+    expect(layers("slim", "top-shoulder").map((l) => l.id)).not.toContain("ribs");
+    expect(layerAt(tipDepth(1, "straight"), "average", "top-shoulder")).toBe("lung");
+  });
 });
 
 describe("cupping marks", () => {
@@ -166,6 +232,17 @@ describe("cupping marks", () => {
     expect(bruising("medium", 12)).toBeGreaterThan(bruising("medium", 2));
     expect(markLevel(bruising("strong", 15))).toBe("purple");
     expect(markLevel(bruising("light", 1))).toBe("none");
+  });
+
+  it("fade over days, the darker marks lasting longer, and all gone by the end of the slider", () => {
+    expect(FADE_DAYS.purple).toBeGreaterThan(FADE_DAYS.red);
+    expect(FADE_DAYS.red).toBeGreaterThan(FADE_DAYS.pink);
+    for (const l of ["pink", "red", "purple"] as const) {
+      expect(markStrength(l, 0)).toBe(1);
+      expect(markStrength(l, 1)).toBeLessThan(1);
+      expect(markStrength(l, DAYS_MAX)).toBe(0);
+    }
+    expect(markStrength("purple", 3)).toBeGreaterThan(markStrength("red", 3));
   });
 });
 

@@ -23,7 +23,7 @@ import {
 } from "@/lib/diagrams/foot";
 import type { Locale } from "@/lib/i18n";
 import { Choice } from "./Choice";
-import { ShapeEl } from "./shapes";
+import { HALO, ShapeEl } from "./shapes";
 import { useMediaQuery } from "./useMediaQuery";
 
 /**
@@ -43,9 +43,6 @@ const W = FOOT_BOX.width;
 const GAP = 24;
 const cat = (slot: number, alpha = 1) => `rgb(var(--cat-${slot}) / ${alpha})`;
 const flipX = (foot: FootSide, x: number) => (foot === "left" ? W - x : x);
-// Labels sit on top of coloured areas and bone outlines; a surface-coloured
-// stroke behind each glyph keeps them readable in both schemes.
-const HALO = { fill: "rgb(var(--ink))", stroke: "rgb(var(--surface))", strokeWidth: 2.5, paintOrder: "stroke", strokeLinejoin: "round" } as const;
 const GROUP_ORDER: GroupId[] = ["head", "glands", "chest", "digestion", "urinary", "spine", "limbs"];
 
 export function FootMap({ locale }: { locale: Locale }) {

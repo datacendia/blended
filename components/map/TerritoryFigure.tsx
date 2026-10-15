@@ -24,13 +24,27 @@ export interface TerritoryLegend {
   referred?: L;
 }
 
-export function TerritoryFigure({ weights, legend, locale, idPrefix }: { weights: Record<string, number>; legend: TerritoryLegend; locale: Locale; idPrefix: string }) {
+export function TerritoryFigure({
+  weights,
+  legend,
+  locale,
+  idPrefix,
+  solid = false
+}: {
+  weights: Record<string, number>;
+  legend: TerritoryLegend;
+  locale: Locale;
+  idPrefix: string;
+  /** Shade referred-pain regions like any other: for maps that are all referred pain, such as a muscle's. */
+  solid?: boolean;
+}) {
   const [hover, setHover] = useState<string | null>(null);
   const w = (region: string) => weights[region] ?? 0;
+  const isReferred = (region: string) => !solid && Boolean(regionById(region)?.referred);
   const views = VIEWS.filter(({ view }) => shapesFor(view, "R").some((s) => w(s.region) > 0));
   if (views.length === 0) return null;
   const shaded = (pred: (weight: number, referred: boolean) => boolean) =>
-    views.some(({ view }) => shapesFor(view, "R").some((s) => pred(w(s.region), Boolean(regionById(s.region)?.referred))));
+    views.some(({ view }) => shapesFor(view, "R").some((s) => pred(w(s.region), isReferred(s.region))));
   const hasPartial = shaded((x, referred) => x > 0 && x < 1 && !referred);
   const hasReferred = shaded((x, referred) => x > 0 && referred);
 
@@ -62,7 +76,7 @@ export function TerritoryFigure({ weights, legend, locale, idPrefix }: { weights
                     key={key}
                     d={s.d}
                     fill={
-                      weight > 0 && region?.referred
+                      weight > 0 && isReferred(s.region)
                         ? `url(#${idPrefix}-referred-${view})`
                         : weight >= 1
                           ? "rgb(var(--accent))"

@@ -190,6 +190,30 @@ export const SOURCES = [
     usedFor: "Massage for neck pain: effects uncertain, no recommendation possible."
   },
   {
+    id: "simons1999",
+    citation:
+      "Simons DG, Travell JG, Simons LS. Travell & Simons' Myofascial Pain and Dysfunction: The Trigger Point Manual. Vol 1: Upper Half of Body. 2nd ed. Baltimore: Williams & Wilkins; 1999.",
+    usedFor: "Where pain from each neck and shoulder muscle is commonly felt (the referral maps)."
+  },
+  {
+    id: "lucas2009",
+    citation:
+      "Lucas N, Macaskill P, Irwig L, Moran R, Bogduk N. Reliability of physical examination for diagnosis of myofascial trigger points: a systematic review of the literature. Clin J Pain. 2009;25(1):80-89.",
+    usedFor: "Examiners often disagree on where trigger points are."
+  },
+  {
+    id: "quintner2015",
+    citation:
+      "Quintner JL, Bove GM, Cohen ML. A critical evaluation of the trigger point phenomenon. Rheumatology (Oxford). 2015;54(3):392-399.",
+    usedFor: "The trigger point theory behind the referral maps is disputed."
+  },
+  {
+    id: "who2008",
+    citation:
+      "World Health Organization Regional Office for the Western Pacific. WHO Standard Acupuncture Point Locations in the Western Pacific Region. Manila: WHO; 2008.",
+    usedFor: "Where named acupuncture points are located."
+  },
+  {
     id: "macpherson2015",
     citation:
       "MacPherson H, Tilbrook H, Richmond S, et al. Alexander Technique lessons or acupuncture sessions for persons with chronic neck pain: a randomized trial. Ann Intern Med. 2015;163(9):653-662.",

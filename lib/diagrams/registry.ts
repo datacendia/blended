@@ -73,8 +73,8 @@ export const DIAGRAM_INFO: Record<DiagramId, { title: L; intro: L }> = {
   "neck-muscles": {
     title: { en: "The neck muscles a massage works on", es: "Los músculos del cuello que trabaja un masaje" },
     intro: {
-      en: "Tap a muscle to see what it does and where tightness is felt. The marked zones are where firm pressure should be avoided.",
-      es: "Toca un músculo para ver qué hace y dónde se nota la tensión. Las zonas marcadas son donde hay que evitar la presión firme."
+      en: "Eighteen muscles from the back, side and front, each numbered. Tap one to see what it attaches to, what it does, how firm a massage can be, and where its pain is often felt. The pressure guide colours the whole chart by how firm is safe.",
+      es: "Dieciocho músculos vistos de espalda, de lado y de frente, cada uno numerado. Toca uno para ver dónde se inserta, qué hace, qué presión admite el masaje y dónde se suele sentir su dolor. La guía de presión colorea todo el mapa según la presión segura."
     }
   },
   balance: {
@@ -108,15 +108,15 @@ export const DIAGRAM_INFO: Record<DiagramId, { title: L; intro: L }> = {
   "needle-depth": {
     title: { en: "How deep is too deep over the upper back?", es: "¿Cuánta profundidad es demasiada en la parte alta de la espalda?" },
     intro: {
-      en: "A schematic slice through the upper back, between the spine and the shoulder blade. Choose a build and an angle, then push the needle in.",
-      es: "Un corte esquemático de la parte alta de la espalda, entre la columna y la escápula. Elige una complexión y un ángulo, y luego introduce la aguja."
+      en: "Pick a needling site on the back to see what lies under it, then choose a build and an angle and push the needle in. Over the lung, only the pleura is left once the ribs are reached.",
+      es: "Elige un punto de punción en la espalda para ver qué hay debajo; luego elige una complexión y un ángulo e introduce la aguja. Sobre el pulmón, al llegar a las costillas solo queda la pleura."
     }
   },
   "cupping-skin": {
     title: { en: "Where cupping marks come from", es: "De dónde salen las marcas de las ventosas" },
     intro: {
-      en: "A slice through the skin under a cup. Change the suction and the time and watch the small blood vessels.",
-      es: "Un corte de la piel bajo una ventosa. Cambia la succión y el tiempo y observa los vasos sanguíneos pequeños."
+      en: "A slice through the skin under a cup, and the marks the cups leave on the back. Change the suction and the time, place the cups, then move the days on to watch the marks fade.",
+      es: "Un corte de la piel bajo una ventosa, y las marcas que dejan las ventosas en la espalda. Cambia la succión y el tiempo, coloca las ventosas y avanza los días para ver cómo se borran las marcas."
     }
   },
   "twist-and-root": {
