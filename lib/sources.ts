@@ -99,6 +99,12 @@ export const SOURCES = [
     usedFor: "Short-term collar or physiotherapy speeds early arm-pain relief versus waiting."
   },
   {
+    id: "fountas2007",
+    citation:
+      "Fountas KN, Kapsalaki EZ, Nikolakakos LG, et al. Anterior cervical discectomy and fusion associated complications. Spine. 2007;32(21):2310-2317.",
+    usedFor: "What can go wrong after surgery from the front of the neck: trouble swallowing most often, hoarseness less often."
+  },
+  {
     id: "persson1997",
     citation:
       "Persson LC, Carlsson CA, Carlsson JY. Long-lasting cervical radicular pain managed with surgery, physiotherapy, or a cervical collar: a prospective, randomized study. Spine. 1997;22(7):751-758.",

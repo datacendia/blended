@@ -205,6 +205,22 @@ console.log("The tools give their answers");
   await page.close();
 }
 {
+  const { page } = await open("/en/who-to-see/neurologist/", { width: 390 });
+  const mimic = page.locator("#diagram-neck-or-arm");
+  await mimic.getByRole("button", { name: "Compare two", exact: true }).click();
+  await mimic.getByRole("group", { name: "First" }).getByRole("button", { name: "C8 root", exact: true }).click();
+  await mimic.getByRole("group", { name: "Second" }).getByRole("button", { name: "Ulnar nerve at the elbow", exact: true }).click();
+  (await mimic.getByText("Inner (little-finger-side) forearm").count()) > 0 ? pass("neck or arm: comparing C8 with the ulnar nerve names the inner forearm") : fail("neck or arm: comparison missing the inner forearm");
+  await page.close();
+}
+{
+  const { page } = await open("/en/who-to-see/surgeon/", { width: 1280 });
+  const surgery = page.locator("#diagram-surgery-options");
+  await surgery.getByRole("button", { name: /^7\s*Nerve to the voice box/ }).click();
+  (await surgery.getByText("can make the voice hoarse", { exact: false }).count()) > 0 ? pass("surgery: the view from above explains the nerve to the voice box") : fail("surgery: voice nerve note missing");
+  await page.close();
+}
+{
   const { page } = await open("/en/who-to-see/physio/", { width: 390 });
   const glide = page.locator("#diagram-nerve-glide");
   await glide.getByRole("button", { name: "Ulnar nerve", exact: true }).click();

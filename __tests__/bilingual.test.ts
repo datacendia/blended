@@ -8,15 +8,15 @@ import { CUP_SITES, CUPPING_COPY, MARK_NAME, MARK_TEXT } from "@/lib/diagrams/cu
 import { DILUTION_COPY } from "@/lib/diagrams/dilution";
 import { BONES, FOOT_COPY, GROUPS as FOOT_GROUPS, NERVES, STRUCTURES as FOOT_STRUCTURES, ZONES } from "@/lib/diagrams/foot";
 import { HEAD_LEVER_COPY } from "@/lib/diagrams/headLever";
-import { MIMIC_COPY, MIMICS } from "@/lib/diagrams/mimics";
+import { CLUE_ROWS, MIMIC_COPY, MIMICS } from "@/lib/diagrams/mimics";
 import { GRADES, MOBILISATION_COPY, REGIONS as SPINE_REGIONS } from "@/lib/diagrams/mobilisation";
 import { ADVICE_LABEL, DEMANDS, NECK_LOAD_COPY, POSES } from "@/lib/diagrams/neckLoad";
 import { MUSCLE_GROUPS, MUSCLES, NECK_MUSCLE_COPY, PRESSURE } from "@/lib/diagrams/neckMuscles";
 import { LAYER_NAME, NEEDLE_COPY, RISK_TEXT, SITES as NEEDLE_SITES } from "@/lib/diagrams/needle";
 import { GLIDE_COPY, GLIDE_TEXT, NERVES as GLIDE_NERVES } from "@/lib/diagrams/nerveGlide";
-import { PATHWAY_COPY, PATHWAY_STAGES } from "@/lib/diagrams/pathway";
+import { MILESTONES, PATHWAY_COPY, PATHWAY_STAGES } from "@/lib/diagrams/pathway";
 import { DIAGRAM_INFO } from "@/lib/diagrams/registry";
-import { SURGERY_COPY, SURGERY_OPTIONS } from "@/lib/diagrams/surgery";
+import { AXIAL, SURGERY_COPY, SURGERY_OPTIONS } from "@/lib/diagrams/surgery";
 import { swapLocaleInPath, vertebraLabel } from "@/lib/i18n";
 import { ORGANS, PARA_NERVE, POSTER_CHECKS, POSTER_VERDICT, RELAYS, SEGMENT_NOTES } from "@/lib/organs";
 import { CONDITIONS, exampleState } from "@/lib/outcomes";
@@ -40,7 +40,7 @@ const EVERYTHING = {
   POSITIONS, ROOM_LABEL, GUIDES, DIAGRAM_INFO, PATHWAY_STAGES, PATHWAY_COPY, MIMICS, MIMIC_COPY, GLIDE_TEXT, GLIDE_COPY, GRADES,
   MOBILISATION_COPY, SURGERY_OPTIONS, SURGERY_COPY, MUSCLES, NECK_MUSCLE_COPY, STANCES, BALANCE_TEXT, BALANCE_COPY, DEMANDS, POSES,
   ADVICE_LABEL, NECK_LOAD_COPY, HEAD_LEVER_COPY, LAYER_NAME, RISK_TEXT, NEEDLE_COPY, MARK_TEXT, CUPPING_COPY, NERVES, ZONES, FOOT_COPY, BONES, FOOT_GROUPS, FOOT_STRUCTURES,
-  DILUTION_COPY, MUSCLE_GROUPS, PRESSURE, CUP_SITES, MARK_NAME, NEEDLE_SITES, GLIDE_NERVES, SPINE_REGIONS
+  DILUTION_COPY, MUSCLE_GROUPS, PRESSURE, CUP_SITES, MARK_NAME, NEEDLE_SITES, GLIDE_NERVES, SPINE_REGIONS, CLUE_ROWS, AXIAL, MILESTONES
 };
 
 interface Pair {

@@ -45,8 +45,8 @@ export const DIAGRAM_INFO: Record<DiagramId, { title: L; intro: L }> = {
   "neck-or-arm": {
     title: { en: "Is it the neck, or a nerve further down?", es: "¿Es el cuello o un nervio más abajo?" },
     intro: {
-      en: "A trapped nerve in the neck and a nerve squeezed at the wrist or elbow can feel alike. Pick one to see where each is usually felt, and the clues that tell them apart.",
-      es: "Un nervio atrapado en el cuello y un nervio comprimido en la muñeca o el codo pueden sentirse parecido. Elige uno para ver dónde suele notarse cada uno y las pistas que los distinguen."
+      en: "A trapped nerve in the neck and a nerve squeezed at the wrist or elbow can feel alike. Pick one to see where it is usually felt, compare two on the same figures, and read every clue side by side.",
+      es: "Un nervio atrapado en el cuello y un nervio comprimido en la muñeca o el codo pueden sentirse parecido. Elige uno para ver dónde suele notarse, compara dos sobre las mismas figuras y lee todas las pistas lado a lado."
     }
   },
   "nerve-glide": {
@@ -66,8 +66,8 @@ export const DIAGRAM_INFO: Record<DiagramId, { title: L; intro: L }> = {
   "surgery-options": {
     title: { en: "What each operation does to the opening", es: "Qué hace cada operación con la abertura" },
     intro: {
-      en: "The same side view as the vertebra page, with a disc pressing on the root. Pick an option to see how it makes room.",
-      es: "La misma vista lateral de la página de la vértebra, con un disco que comprime la raíz. Elige una opción para ver cómo hace espacio."
+      en: "The same side view as the vertebra page, with a disc pressing on the root. Pick an option to see how it makes room, the route in seen from above with everything it passes, and the options side by side.",
+      es: "La misma vista lateral de la página de la vértebra, con un disco que comprime la raíz. Elige una opción para ver cómo hace espacio, la vía de entrada vista desde arriba con todo lo que atraviesa, y las opciones lado a lado."
     }
   },
   "neck-muscles": {

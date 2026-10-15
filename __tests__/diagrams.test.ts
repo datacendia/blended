@@ -3,15 +3,15 @@ import { bruising, DAYS_MAX, FADE_DAYS, markLevel, markStrength } from "@/lib/di
 import { chanceLog10, chanceOfOne, expectedLog10, scientific } from "@/lib/diagrams/dilution";
 import { FOOT_BOX, NERVE_AREAS, NERVES, STRUCTURES, zoneById, ZONES, zonesFor } from "@/lib/diagrams/foot";
 import { HEAD_ANGLES, modelLoad } from "@/lib/diagrams/headLever";
-import { MIMICS } from "@/lib/diagrams/mimics";
+import { CLUE_ROWS, differences, MIMICS } from "@/lib/diagrams/mimics";
 import { GRADES, gradeSpan, JOINT_STATES } from "@/lib/diagrams/mobilisation";
 import { DEMANDS, POSES } from "@/lib/diagrams/neckLoad";
 import { lookalikeRoots, muscleById, MUSCLES, NECK_BOX, PAINT_ORDER } from "@/lib/diagrams/neckMuscles";
 import { boneDepth, layerAt, layers, NEEDLE_LENGTH, riskAt, SITES, tipDepth, type Build } from "@/lib/diagrams/needle";
 import { glideKind, nerveTension, REST_POSE, SLIDER_POSE, slideToward, TEST_POSE, type Pose } from "@/lib/diagrams/nerveGlide";
-import { likelyStage, PATHWAY_STAGES, REVIEW_WEEKS } from "@/lib/diagrams/pathway";
+import { likelyStage, MILESTONES, PATHWAY_STAGES, REVIEW_WEEKS, TIMELINE_WEEKS, TRIAL_WEEKS } from "@/lib/diagrams/pathway";
 import { GUIDE_DIAGRAMS } from "@/lib/diagrams/registry";
-import { surgeryOpening, SURGERY_OPTIONS } from "@/lib/diagrams/surgery";
+import { AXIAL, surgeryOpening, SURGERY_OPTIONS } from "@/lib/diagrams/surgery";
 import { CLINICIANS } from "@/lib/clinicians";
 import { GUIDE_PAGES } from "@/lib/guides";
 import { REGIONS } from "@/lib/regions";
@@ -53,6 +53,14 @@ describe("care pathway", () => {
     const placed = new Set(PATHWAY_STAGES.flatMap((s) => s.who));
     for (const c of CLINICIANS) expect(placed.has(c.id)).toBe(true);
   });
+  it("puts the tracker's trial checkpoint before the medical review, both on the timeline", () => {
+    expect(TRIAL_WEEKS).toBeLessThan(REVIEW_WEEKS);
+    for (const m of MILESTONES) expect(m.week).toBeLessThanOrEqual(TIMELINE_WEEKS);
+    expect(MILESTONES.find((m) => m.id === "review")!.week).toBe(REVIEW_WEEKS);
+  });
+  it("says what happens at every step", () => {
+    for (const st of PATHWAY_STAGES) expect(st.happens.length).toBeGreaterThan(0);
+  });
 });
 
 describe("neck root or a nerve further down", () => {
@@ -69,6 +77,19 @@ describe("neck root or a nerve further down", () => {
   it("tells a C8 root from the ulnar nerve by the inner forearm", () => {
     expect(m("c8").weights["inner-forearm"]).toBe(1);
     expect(m("ulnar").weights["inner-forearm"]).toBeUndefined();
+    expect(differences(m("c8"), m("ulnar")).onlyA).toContain("inner-forearm");
+  });
+  it("tells C6 from carpal tunnel by the forearm and the base of the thumb", () => {
+    const d = differences(m("c6"), m("carpal"));
+    expect(d.onlyA).toEqual(expect.arrayContaining(["outer-forearm", "palm-thumb-side"]));
+  });
+  it("fills every cell of the clue table, and only the roots answer yes to neck pain", () => {
+    for (const x of MIMICS) for (const r of CLUE_ROWS) expect(x.table[r.id]).toBeDefined();
+    for (const x of MIMICS) expect({ id: x.id, neck: x.table.neck === "yes" }).toEqual({ id: x.id, neck: x.kind === "root" });
+  });
+  it("puts the C5 root in the upper arm, not the hand", () => {
+    expect(m("c5").weights["outer-upper-arm"]).toBe(1);
+    for (const r of ["thumb", "index", "middle", "ring", "little"]) expect(m("c5").weights[r]).toBeUndefined();
   });
 });
 
@@ -127,7 +148,15 @@ describe("surgery options", () => {
     expect(surgeryOpening("wait").state).toBe("touching");
     for (const o of SURGERY_OPTIONS.filter((x) => x.id !== "wait")) expect(surgeryOpening(o.id).state).toBe("free");
   });
+  it("numbers the parts of the view from above once each, inside the neck", () => {
+    expect(AXIAL.map((x) => x.n)).toEqual(AXIAL.map((_, i) => i + 1));
+    for (const x of AXIAL) expect({ id: x.id, inside: x.at[0] > 20 && x.at[0] < 280 && x.at[1] > 14 && x.at[1] < 240 }).toEqual({ id: x.id, inside: true });
+  });
+  it("goes in from the front only for the operations that take the disc out", () => {
+    for (const o of SURGERY_OPTIONS) expect({ id: o.id, front: o.route === "front" }).toEqual({ id: o.id, front: o.id === "acdf" || o.id === "disc-replacement" });
+  });
 });
+
 
 describe("balance", () => {
   const base = (s: keyof typeof STANCES) => convexHull(STANCES[s].feet.flat());
