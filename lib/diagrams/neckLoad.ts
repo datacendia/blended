@@ -256,6 +256,8 @@ export const ADVICE_LABEL: Record<Advice, L> = {
 };
 
 export const NECK_LOAD_COPY = {
+  closeUp: { en: "The neck, close up", es: "El cuello, de cerca" },
+  gallery: { en: "Every pose", es: "Todas las posturas" },
   instead: { en: "Instead", es: "En su lugar" },
   why: { en: "Why", es: "Por qué" },
   figure: { en: "The head and neck in this pose", es: "La cabeza y el cuello en esta postura" },
@@ -267,3 +269,145 @@ export const NECK_LOAD_COPY = {
     es: "La lectura prudente de RootAtlas para un nervio atrapado en el cuello, no una regla. Avísale al profesor y detén todo lo que provoque síntomas en el brazo."
   }
 } as const;
+
+/* ---------- Whole-body pose figures ---------- */
+
+export type Pt = readonly [number, number];
+
+/**
+ * A side-view pictogram of each pose in a 120×100 box, ground at y=92.
+ * The neck runs from the base of the skull to the shoulders, so it can be
+ * coloured on its own; the spine runs from the shoulders to the hips; limbs
+ * are polylines from the shoulder or hip.
+ */
+export interface PoseFigure {
+  head: Pt;
+  neck: readonly [Pt, Pt];
+  spine: readonly Pt[];
+  limbs: readonly (readonly Pt[])[];
+}
+
+export const GROUND_Y = 92;
+
+export const FIGURES: Record<string, PoseFigure> = {
+  headstand: {
+    head: [60, 85],
+    neck: [[60, 78], [60, 72]],
+    spine: [[60, 72], [60, 42]],
+    limbs: [[[60, 72], [46, 90], [56, 92]], [[60, 72], [74, 90], [64, 92]], [[60, 42], [59, 22], [59, 4]], [[60, 42], [62, 22], [62, 4]]]
+  },
+  "shoulder-stand": {
+    head: [24, 85],
+    neck: [[31, 87], [40, 86]],
+    spine: [[40, 86], [42, 52]],
+    limbs: [[[40, 86], [56, 90], [50, 66]], [[42, 52], [43, 30], [44, 8]], [[42, 52], [45, 30], [46, 8]]]
+  },
+  plough: {
+    head: [78, 85],
+    neck: [[71, 87], [62, 86]],
+    spine: [[62, 86], [60, 54]],
+    limbs: [[[62, 86], [46, 90], [30, 92]], [[60, 54], [82, 56], [104, 90]], [[60, 54], [84, 58], [106, 90]]]
+  },
+  wheel: {
+    head: [36, 74],
+    neck: [[39, 67], [44, 58]],
+    spine: [[44, 58], [58, 45], [74, 50]],
+    limbs: [[[44, 58], [36, 76], [30, 92]], [[74, 50], [88, 66], [92, 92]], [[74, 50], [86, 68], [88, 92]]]
+  },
+  camel: {
+    head: [30, 26],
+    neck: [[36, 30], [46, 34]],
+    spine: [[46, 34], [56, 46], [62, 62]],
+    limbs: [[[46, 34], [40, 60], [36, 88]], [[62, 62], [62, 92], [34, 92]]]
+  },
+  cobra: {
+    head: [27, 40],
+    neck: [[30, 47], [34, 58]],
+    spine: [[34, 58], [46, 72], [64, 88]],
+    limbs: [[[34, 58], [36, 76], [36, 92]], [[64, 88], [88, 90], [112, 92]]]
+  },
+  "warrior-2": {
+    head: [61, 13],
+    neck: [[61, 20], [60, 27]],
+    spine: [[60, 27], [60, 56]],
+    limbs: [[[60, 30], [84, 30], [106, 30]], [[60, 30], [36, 30], [14, 30]], [[60, 56], [84, 64], [84, 92]], [[60, 56], [38, 72], [22, 92]]]
+  },
+  "seated-twist": {
+    head: [42, 44],
+    neck: [[42, 51], [42, 58]],
+    spine: [[42, 58], [40, 88]],
+    limbs: [[[42, 62], [58, 68], [64, 72]], [[42, 62], [30, 76], [24, 92]], [[40, 88], [70, 90], [102, 92]], [[40, 88], [62, 70], [66, 92]]]
+  },
+  "downward-dog": {
+    head: [33, 79],
+    neck: [[36, 72], [40, 64]],
+    spine: [[40, 64], [64, 40]],
+    limbs: [[[40, 64], [32, 78], [24, 92]], [[64, 40], [80, 66], [96, 92]], [[64, 40], [82, 66], [99, 92]]]
+  },
+  child: {
+    head: [33, 85],
+    neck: [[40, 86], [46, 84]],
+    spine: [[46, 84], [66, 76], [88, 80]],
+    limbs: [[[46, 84], [28, 90], [10, 92]], [[88, 80], [68, 92], [100, 92]]]
+  },
+  "yoga-bridge": {
+    head: [18, 85],
+    neck: [[25, 87], [34, 87]],
+    spine: [[34, 87], [50, 72], [66, 62]],
+    limbs: [[[34, 87], [56, 92], [74, 92]], [[66, 62], [84, 58], [92, 92]]]
+  },
+  hundred: {
+    head: [25, 62],
+    neck: [[29, 68], [36, 74]],
+    spine: [[36, 74], [48, 82], [64, 86]],
+    limbs: [[[36, 74], [52, 76], [70, 76]], [[64, 86], [84, 66], [104, 48]], [[64, 86], [85, 68], [106, 51]]]
+  },
+  "chest-lift": {
+    head: [27, 64],
+    neck: [[31, 70], [38, 76]],
+    spine: [[38, 76], [50, 84], [66, 88]],
+    limbs: [[[38, 76], [26, 72], [22, 62]], [[66, 88], [84, 66], [98, 92]]]
+  },
+  "roll-up": {
+    head: [74, 62],
+    neck: [[68, 58], [62, 56]],
+    spine: [[62, 56], [48, 66], [40, 88]],
+    limbs: [[[62, 56], [80, 66], [98, 76]], [[40, 88], [70, 90], [102, 92]]]
+  },
+  "single-leg-stretch": {
+    head: [27, 62],
+    neck: [[31, 68], [38, 74]],
+    spine: [[38, 74], [50, 82], [66, 86]],
+    limbs: [[[38, 74], [50, 66], [60, 62]], [[66, 86], [56, 64], [70, 58]], [[66, 86], [86, 70], [106, 56]]]
+  },
+  swan: {
+    head: [24, 51],
+    neck: [[28, 58], [34, 66]],
+    spine: [[34, 66], [48, 78], [66, 88]],
+    limbs: [[[34, 66], [34, 80], [36, 92]], [[66, 88], [90, 90], [112, 92]]]
+  },
+  swimming: {
+    head: [25, 74],
+    neck: [[31, 78], [38, 82]],
+    spine: [[38, 82], [68, 84]],
+    limbs: [[[38, 82], [22, 76], [6, 70]], [[38, 82], [22, 86], [8, 88]], [[68, 84], [90, 80], [112, 76]], [[68, 84], [90, 88], [110, 90]]]
+  },
+  "rolling-like-a-ball": {
+    head: [70, 55],
+    neck: [[63, 53], [56, 54]],
+    spine: [[56, 54], [46, 68], [54, 86]],
+    limbs: [[[56, 56], [68, 66], [78, 74]], [[54, 86], [72, 64], [80, 80]]]
+  },
+  "pilates-bridge": {
+    head: [18, 85],
+    neck: [[25, 87], [34, 87]],
+    spine: [[34, 87], [50, 76], [66, 68]],
+    limbs: [[[34, 87], [56, 92], [74, 92]], [[66, 68], [84, 62], [92, 92]]]
+  },
+  "side-kick": {
+    head: [20, 60],
+    neck: [[24, 67], [30, 84]],
+    spine: [[30, 84], [60, 88]],
+    limbs: [[[30, 84], [22, 74], [20, 66]], [[60, 88], [84, 89], [108, 89]], [[60, 86], [80, 74], [98, 64]]]
+  }
+};

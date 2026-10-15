@@ -1,11 +1,11 @@
-import { balanceState, convexHull, margin, polygonArea, STANCES } from "@/lib/diagrams/balance";
+import { balanceState, comForShare, convexHull, footLoads, margin, polygonArea, STANCES } from "@/lib/diagrams/balance";
 import { bruising, DAYS_MAX, FADE_DAYS, markLevel, markStrength } from "@/lib/diagrams/cupping";
-import { chanceLog10, chanceOfOne, expectedLog10, scientific } from "@/lib/diagrams/dilution";
+import { chanceLog10, chanceOfOne, expectedLog10, lastMoleculeStep, scientific } from "@/lib/diagrams/dilution";
 import { FOOT_BOX, NERVE_AREAS, NERVES, STRUCTURES, zoneById, ZONES, zonesFor } from "@/lib/diagrams/foot";
 import { HEAD_ANGLES, modelLoad } from "@/lib/diagrams/headLever";
 import { CLUE_ROWS, differences, MIMICS } from "@/lib/diagrams/mimics";
 import { GRADES, gradeSpan, JOINT_STATES } from "@/lib/diagrams/mobilisation";
-import { DEMANDS, POSES } from "@/lib/diagrams/neckLoad";
+import { DEMANDS, FIGURES, POSES } from "@/lib/diagrams/neckLoad";
 import { lookalikeRoots, muscleById, MUSCLES, NECK_BOX, PAINT_ORDER } from "@/lib/diagrams/neckMuscles";
 import { boneDepth, layerAt, layers, NEEDLE_LENGTH, riskAt, SITES, tipDepth, type Build } from "@/lib/diagrams/needle";
 import { glideKind, nerveTension, REST_POSE, SLIDER_POSE, slideToward, TEST_POSE, type Pose } from "@/lib/diagrams/nerveGlide";
@@ -173,6 +173,23 @@ describe("balance", () => {
     expect(balanceState([130, 60], base("together"))).toBe("step");
     expect(balanceState([130, 60], base("tai-chi"))).not.toBe("step");
   });
+  it("splits the weight by the lever rule, always adding up to the whole body", () => {
+    for (const s of Object.keys(STANCES) as (keyof typeof STANCES)[]) {
+      const loads = footLoads(comForShare(s, 0.5), s);
+      expect(loads.reduce((a, b) => a + b, 0)).toBeCloseTo(1);
+    }
+    expect(footLoads(comForShare("apart", 0.5), "apart")).toEqual([0.5, 0.5]);
+    expect(footLoads(comForShare("tai-chi", 0.9), "tai-chi")[0]).toBeCloseTo(0.9);
+  });
+  it("is narrowest side to side heel to toe, and widest in the horse and bow stances", () => {
+    expect(balanceState([140, 120], base("tandem"))).toBe("step");
+    expect(balanceState([140, 120], base("apart"))).not.toBe("step");
+    expect(polygonArea(base("horse"))).toBeGreaterThan(polygonArea(base("apart")));
+    expect(polygonArea(base("tai-chi"))).toBeGreaterThan(polygonArea(base("apart")));
+  });
+  it("keeps every weight-shift position inside the base", () => {
+    for (const s of Object.keys(STANCES) as (keyof typeof STANCES)[]) for (const share of [0.1, 0.5, 0.9]) expect(balanceState(comForShare(s, share), base(s))).not.toBe("step");
+  });
 });
 
 describe("neck load in yoga and Pilates", () => {
@@ -186,6 +203,14 @@ describe("neck load in yoga and Pilates", () => {
     for (const set of ["yoga", "pilates"] as const) {
       const advice = new Set(POSES.filter((p) => p.set === set).map((p) => p.advice));
       expect([...advice].sort()).toEqual(["avoid", "fine", "modify"]);
+    }
+  });
+  it("draws every pose as a whole-body figure, its neck joined to its spine, inside the box", () => {
+    for (const p of POSES) {
+      const f = FIGURES[p.id];
+      expect({ id: p.id, drawn: Boolean(f) }).toEqual({ id: p.id, drawn: true });
+      expect(f!.neck[1]).toEqual(f!.spine[0]);
+      for (const [x, y] of [f!.head, ...f!.spine, ...f!.limbs.flat()]) expect({ id: p.id, inside: x >= 0 && x <= 120 && y >= 0 && y <= 100 }).toEqual({ id: p.id, inside: true });
     }
   });
 });
@@ -365,5 +390,13 @@ describe("homeopathic dilution", () => {
     expect(chanceLog10(200)).toBeCloseTo(-376.2, 1);
     expect(Number.isFinite(chanceLog10(200))).toBe(true);
     expect(chanceLog10(13)).toBeCloseTo(Math.log10(chanceOfOne(13)), 6);
+  });
+  it("loses the last expected molecule after 12C, and after 24X on the 1-in-10 scale", () => {
+    expect(lastMoleculeStep("C")).toBe(12);
+    expect(lastMoleculeStep("X")).toBe(24);
+    expect(expectedLog10(24, "X")).toBeCloseTo(expectedLog10(12, "C"));
+    expect(expectedLog10(11, "C")).toBeGreaterThan(0);
+    expect(expectedLog10(12, "C")).toBeLessThan(0);
+    expect(chanceLog10(30, "X")).toBeLessThan(-6);
   });
 });

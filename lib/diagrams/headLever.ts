@@ -41,7 +41,11 @@ export const HEAD_LEVER_COPY = {
     en: "Alexander lessons work on the habits behind long stretches in positions like these. The neck-pain trial measured pain, not head angles.",
     es: "Las clases de técnica Alexander trabajan los hábitos que llevan a pasar mucho tiempo en posturas así. El ensayo de dolor de cuello midió el dolor, no los ángulos de la cabeza."
   },
-  report: { en: "See how the posture report uses this number", es: "Ver cómo usa este número el informe postural" }
+  report: { en: "See how the posture report uses this number", es: "Ver cómo usa este número el informe postural" },
+  muscles: { en: "Muscles at the back of the neck", es: "Músculos de la nuca" },
+  squares: { en: "One square per kilogram", es: "Un cuadrado por kilogramo" },
+  uprightShare: { en: "Outlined: the upright figure", es: "Con borde: la cifra en posición erguida" },
+  stops: { en: "The slider stops only at the five angles the model reported.", es: "El control solo se detiene en los cinco ángulos que dio el modelo." }
 } as const;
 
 export const HEAD_LEVER_SOURCES: readonly SourceId[] = ["hansraj2014", "macpherson2015"];

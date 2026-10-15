@@ -221,6 +221,21 @@ console.log("The tools give their answers");
   await page.close();
 }
 {
+  const { page } = await open("/en/who-to-see/tai-chi/", { width: 390 });
+  const bal = page.locator("#diagram-balance");
+  await bal.getByRole("group", { name: "Stance" }).getByRole("button", { name: "Bow stance", exact: true }).click();
+  await bal.getByRole("button", { name: "Front foot · 90%", exact: true }).click();
+  (await bal.getByText("90%").count()) > 0 ? pass("balance: the bow stance shifts 90% onto the front foot") : fail("balance: weight shift missing");
+  await page.close();
+}
+{
+  const { page } = await open("/es/who-to-see/homeopathy/", { width: 390 });
+  const dil = page.locator("#diagram-dilution");
+  await dil.getByRole("button", { name: "X o D: 1 en 10", exact: true }).click();
+  (await dil.getByText("Desde 24X", { exact: false }).count()) > 0 ? pass("dilution: on the 1-in-10 scale the last molecule goes after 24X (es)") : fail("dilution: X scale crossover missing");
+  await page.close();
+}
+{
   const { page } = await open("/en/who-to-see/physio/", { width: 390 });
   const glide = page.locator("#diagram-nerve-glide");
   await glide.getByRole("button", { name: "Ulnar nerve", exact: true }).click();

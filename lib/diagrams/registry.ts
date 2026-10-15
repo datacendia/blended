@@ -80,22 +80,22 @@ export const DIAGRAM_INFO: Record<DiagramId, { title: L; intro: L }> = {
   balance: {
     title: { en: "Why tai chi trains balance", es: "Por qué el taichí entrena el equilibrio" },
     intro: {
-      en: "Seen from above: you stay upright while your centre of mass is over the area between your feet. Pick a stance and drag the dot, or use the sliders.",
-      es: "Visto desde arriba: te mantienes en pie mientras tu centro de masa está sobre el área entre tus pies. Elige una postura y arrastra el punto, o usa los controles."
+      en: "Seen from above: you stay upright while your centre of mass is over the area between your feet. Pick one of seven stances, drag the dot or shift the weight, and see the load on each foot and how big the base is.",
+      es: "Visto desde arriba: te mantienes en pie mientras tu centro de masa está sobre el área entre tus pies. Elige una de siete posturas, arrastra el punto o cambia el peso, y mira la carga en cada pie y el tamaño de la base."
     }
   },
   "neck-load-yoga": {
     title: { en: "What each pose asks of your neck", es: "Qué le pide cada postura a tu cuello" },
     intro: {
-      en: "Pick a pose to see what it does to the neck, and what to do instead if you have a trapped nerve.",
-      es: "Elige una postura para ver qué le hace al cuello y qué hacer en su lugar si tienes un nervio atrapado."
+      en: "Every pose drawn whole, its neck coloured by the advice. Pick one to see what it does to the neck, close up, and what to do instead if you have a trapped nerve.",
+      es: "Cada postura dibujada entera, con el cuello coloreado según el consejo. Elige una para ver de cerca qué le hace al cuello y qué hacer en su lugar si tienes un nervio atrapado."
     }
   },
   "neck-load-pilates": {
     title: { en: "What each exercise asks of your neck", es: "Qué le pide cada ejercicio a tu cuello" },
     intro: {
-      en: "Pick an exercise to see what it does to the neck, and what to do instead if you have a trapped nerve.",
-      es: "Elige un ejercicio para ver qué le hace al cuello y qué hacer en su lugar si tienes un nervio atrapado."
+      en: "Every exercise drawn whole, its neck coloured by the advice. Pick one to see what it does to the neck, close up, and what to do instead if you have a trapped nerve.",
+      es: "Cada ejercicio dibujado entero, con el cuello coloreado según el consejo. Elige uno para ver de cerca qué le hace al cuello y qué hacer en su lugar si tienes un nervio atrapado."
     }
   },
   "head-lever": {
@@ -136,8 +136,8 @@ export const DIAGRAM_INFO: Record<DiagramId, { title: L; intro: L }> = {
   dilution: {
     title: { en: "How much is left in a homeopathic remedy?", es: "¿Cuánto queda en un remedio homeopático?" },
     intro: {
-      en: "Each 'C' means diluting 1 part in 100. Pick a strength and see how much of the original substance you'd expect to remain.",
-      es: "Cada 'C' significa diluir 1 parte en 100. Elige una potencia y mira cuánto de la sustancia original cabe esperar que quede."
+      en: "Each 'C' means diluting 1 part in 100, each 'X' 1 part in 10. Pick a scale and a strength, and follow the original molecules vial by vial down to the step where none are expected.",
+      es: "Cada 'C' significa diluir 1 parte en 100, cada 'X' 1 parte en 10. Elige una escala y una potencia, y sigue las moléculas originales frasco a frasco hasta el paso en que ya no se espera ninguna."
     }
   }
 };
