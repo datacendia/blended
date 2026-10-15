@@ -205,6 +205,23 @@ console.log("The tools give their answers");
   await page.close();
 }
 {
+  const { page } = await open("/en/who-to-see/physio/", { width: 390 });
+  const glide = page.locator("#diagram-nerve-glide");
+  await glide.getByRole("button", { name: "Ulnar nerve", exact: true }).click();
+  await glide.getByRole("button", { name: "The test position", exact: true }).click();
+  (await glide.getByText("Tensioner: both ends pulled").count()) > 0 ? pass("nerve glide: the ulnar test position is a tensioner") : fail("nerve glide: ulnar test position wrong");
+  await glide.getByRole("button", { name: "A slider", exact: true }).click();
+  (await glide.getByText("slides toward the hand end").count()) > 0 ? pass("nerve glide: the slider says which way the nerve moves") : fail("nerve glide: slider direction missing");
+  await page.close();
+}
+{
+  const { page } = await open("/es/who-to-see/chiropractor/", { width: 1280 });
+  const grades = page.locator("#diagram-mobilisation-grades");
+  await grades.getByRole("button", { name: "Rígida", exact: true }).click();
+  (await grades.getByText("El límite llega antes", { exact: false }).count()) > 0 ? pass("grades: a stiff joint moves the limit (es)") : fail("grades: stiff state missing");
+  await page.close();
+}
+{
   const { page } = await open("/en/who-to-see/massage/", { width: 1280 });
   const chart = page.locator("#diagram-neck-muscles");
   await chart.getByRole("region", { name: "Key: tap any muscle" }).getByRole("button", { name: /^12\s*Anterior scalene/ }).click();

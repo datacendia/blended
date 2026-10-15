@@ -4,11 +4,11 @@ import { chanceLog10, chanceOfOne, expectedLog10, scientific } from "@/lib/diagr
 import { FOOT_BOX, NERVE_AREAS, NERVES, STRUCTURES, zoneById, ZONES, zonesFor } from "@/lib/diagrams/foot";
 import { HEAD_ANGLES, modelLoad } from "@/lib/diagrams/headLever";
 import { MIMICS } from "@/lib/diagrams/mimics";
-import { GRADES } from "@/lib/diagrams/mobilisation";
+import { GRADES, gradeSpan, JOINT_STATES } from "@/lib/diagrams/mobilisation";
 import { DEMANDS, POSES } from "@/lib/diagrams/neckLoad";
 import { lookalikeRoots, muscleById, MUSCLES, NECK_BOX, PAINT_ORDER } from "@/lib/diagrams/neckMuscles";
 import { boneDepth, layerAt, layers, NEEDLE_LENGTH, riskAt, SITES, tipDepth, type Build } from "@/lib/diagrams/needle";
-import { glideKind, nerveTension } from "@/lib/diagrams/nerveGlide";
+import { glideKind, nerveTension, REST_POSE, SLIDER_POSE, slideToward, TEST_POSE, type Pose } from "@/lib/diagrams/nerveGlide";
 import { likelyStage, PATHWAY_STAGES, REVIEW_WEEKS } from "@/lib/diagrams/pathway";
 import { GUIDE_DIAGRAMS } from "@/lib/diagrams/registry";
 import { surgeryOpening, SURGERY_OPTIONS } from "@/lib/diagrams/surgery";
@@ -73,12 +73,29 @@ describe("neck root or a nerve further down", () => {
 });
 
 describe("nerve gliding", () => {
-  it("pulls both ends in a tensioner and slides in a slider", () => {
-    expect(glideKind("away", "straight")).toBe("tensioner");
-    expect(glideKind("toward", "straight")).toBe("slider");
-    expect(glideKind("away", "bent")).toBe("slider");
-    expect(glideKind("toward", "bent")).toBe("slack");
-    expect(nerveTension("neutral", "straight")).toBe(1);
+  const nerves = ["median", "radial", "ulnar"] as const;
+  it("makes each nerve's standard test position a tensioner, and its slider a slider", () => {
+    for (const n of nerves) {
+      expect({ n, kind: glideKind(n, TEST_POSE[n]) }).toEqual({ n, kind: "tensioner" });
+      expect({ n, kind: glideKind(n, SLIDER_POSE[n]) }).toEqual({ n, kind: "slider" });
+      expect(slideToward(n, SLIDER_POSE[n])).toBe("hand");
+    }
+  });
+
+  it("pulls hardest on the nerve whose test it is", () => {
+    for (const n of nerves) for (const other of nerves.filter((x) => x !== n)) expect(nerveTension(n, TEST_POSE[n])).toBeGreaterThan(nerveTension(other, TEST_POSE[n]));
+  });
+
+  it("loads the ulnar nerve with a bent elbow and the median and radial with a straight one", () => {
+    const bent: Pose = { head: "neutral", shoulder: "relaxed", elbow: "bent", forearm: "up", wrist: "neutral" };
+    const straight: Pose = { ...bent, elbow: "straight" };
+    expect(nerveTension("ulnar", bent)).toBeGreaterThan(nerveTension("ulnar", straight));
+    expect(nerveTension("median", straight)).toBeGreaterThan(nerveTension("median", bent));
+    expect(nerveTension("radial", straight)).toBeGreaterThan(nerveTension("radial", bent));
+  });
+
+  it("has a most-slack position for each nerve", () => {
+    for (const n of nerves) expect({ n, kind: glideKind(n, REST_POSE[n]) }).toEqual({ n, kind: "slack" });
   });
 });
 
@@ -94,6 +111,14 @@ describe("mobilisation grades", () => {
     };
     expect(span("II")).toBeGreaterThan(span("I"));
     expect(span("III")).toBeGreaterThan(span("IV"));
+  });
+  it("stops grade II short of the first resistance in every joint state", () => {
+    for (const st of ["normal", "stiff", "painful"] as const) expect(gradeSpan("II", st).to).toBeLessThan(JOINT_STATES[st].r1);
+  });
+  it("moves every grade with the limit: a stiff joint's IV sits before the normal end of range", () => {
+    expect(gradeSpan("IV", "stiff").to).toBeLessThan(gradeSpan("IV", "normal").to);
+    expect(gradeSpan("IV", "stiff").to).toBeLessThanOrEqual(JOINT_STATES.stiff.limit);
+    expect(gradeSpan("V", "stiff").to).toBeGreaterThan(JOINT_STATES.stiff.limit);
   });
 });
 

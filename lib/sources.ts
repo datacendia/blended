@@ -82,6 +82,17 @@ export const SOURCES = [
     usedFor: "Neural mobilisation (nerve gliding)."
   },
   {
+    id: "butler2000",
+    citation: "Butler DS. The Sensitive Nervous System. Adelaide: Noigroup Publications; 2000.",
+    usedFor: "Which arm and neck positions load the median, radial and ulnar nerves, and the standard upper-limb nerve tests."
+  },
+  {
+    id: "coppieters2008",
+    citation:
+      "Coppieters MW, Butler DS. Do 'sliders' slide and 'tensioners' tension? An analysis of neurodynamic techniques and considerations regarding their application. Man Ther. 2008;13(3):213-221.",
+    usedFor: "Sliders move a nerve with much less strain than tensioners."
+  },
+  {
     id: "kuijper2009",
     citation:
       "Kuijper B, Tans JTJ, Beelen A, Nollet F, de Visser M. Cervical collar or physiotherapy versus wait and see policy for recent onset cervical radiculopathy: randomised trial. BMJ. 2009;339:b3883.",
@@ -176,6 +187,11 @@ export const SOURCES = [
     citation:
       "Yoo JU, Zou D, Edwards WT, Bayley J, Yuan HA. Effect of cervical spine motion on the neuroforaminal dimensions of human cervical spine. Spine. 1992;17(10):1131-1136.",
     usedFor: "The side opening a neck root leaves through gets smaller when looking up or turning toward that side, and larger when looking down."
+  },
+  {
+    id: "maitland2005",
+    citation: "Maitland GD, Hengeveld E, Banks K, English K. Maitland's Vertebral Manipulation. 7th ed. Edinburgh: Elsevier Butterworth-Heinemann; 2005.",
+    usedFor: "The grades of mobilisation, drawn on the movement diagram: where in the range each works and what each is used for."
   },
   {
     id: "kawchuk2015",

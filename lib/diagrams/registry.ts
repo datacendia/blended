@@ -52,15 +52,15 @@ export const DIAGRAM_INFO: Record<DiagramId, { title: L; intro: L }> = {
   "nerve-glide": {
     title: { en: "Nerve gliding: slider or tensioner?", es: "Deslizamiento neural: ¿deslizador o tensor?" },
     intro: {
-      en: "Physios move the nerve from the neck to the hand by positioning the head and arm. Change both and watch what happens to the nerve.",
-      es: "Los fisioterapeutas mueven el nervio del cuello a la mano colocando la cabeza y el brazo. Cambia ambos y mira qué le pasa al nervio."
+      en: "Three nerves run from the neck to the hand, and each is pulled tight by a different set of joint positions. Pick a nerve, move the head, shoulder, elbow, forearm and wrist, and see what each does to it, or load a physio's test position.",
+      es: "Tres nervios van del cuello a la mano, y cada uno se tensa con una combinación distinta de posiciones. Elige un nervio, mueve la cabeza, el hombro, el codo, el antebrazo y la muñeca, y mira qué le hace cada uno, o carga la posición de prueba de un fisioterapeuta."
     }
   },
   "mobilisation-grades": {
     title: { en: "Mobilisation or manipulation?", es: "¿Movilización o manipulación?" },
     intro: {
-      en: "Hands-on joint treatment is graded from I to V by where in the joint's range it works and how big the movement is. Pick a grade.",
-      es: "El tratamiento articular manual se gradúa del I al V según en qué parte del recorrido de la articulación trabaja y lo amplio que es el movimiento. Elige un grado."
+      en: "Hands-on joint treatment is graded from I to V by where in the joint's range it works and how big the movement is. Pick a grade and a joint state on the movement diagram, and watch the joint itself glide.",
+      es: "El tratamiento articular manual se gradúa del I al V según en qué parte del recorrido trabaja y lo amplio que es el movimiento. Elige un grado y el estado de la articulación en el diagrama de movimiento, y mira cómo se desliza la articulación."
     }
   },
   "surgery-options": {
