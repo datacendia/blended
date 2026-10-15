@@ -1,150 +1,280 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useState } from "react";
 import { SourceList } from "@/components/ui/SourceList";
 import { fill } from "@/lib/copy";
-import { FOOT_COPY, FOOT_SOURCES, NERVES, ZONES, type NerveId, type ZoneId } from "@/lib/diagrams/foot";
+import {
+  BONES,
+  FOOT_BOX,
+  FOOT_COPY,
+  FOOT_OUTLINE,
+  FOOT_SOURCES,
+  GROUPS,
+  NERVE_AREAS,
+  NERVES,
+  STRUCTURES,
+  TOES,
+  zoneById,
+  ZONES,
+  zonesFor,
+  type FootSide,
+  type GroupId,
+  type Zone
+} from "@/lib/diagrams/foot";
 import type { Locale } from "@/lib/i18n";
 import { Choice } from "./Choice";
+import { ShapeEl } from "./shapes";
+import { useMediaQuery } from "./useMediaQuery";
 
 /**
- * Right sole, toes up. The same zones can be coloured two ways: by the
- * chart's horizontal bands, or by the nerves, which run lengthwise. Seeing
- * one switch to the other is the point.
+ * Both soles, as the printed charts draw them: the left foot on the left with
+ * its big toe toward the middle, the right foot mirrored. Three views share
+ * one set of tappable zones, so a zone picked on the chart stays outlined
+ * when you switch to the nerves or the bones underneath.
+ *
+ * The left foot is the right foot's geometry mirrored. Shapes are mirrored
+ * with a transform; numbers and labels are placed at mirrored coordinates
+ * instead, so the text doesn't read backwards.
  */
-const SOLE = "M64 334C40 326 34 290 40 250C45 214 40 182 38 150C36 120 37 94 45 80C60 62 122 58 152 74C164 84 164 112 160 142C156 176 160 214 162 250C166 300 150 334 116 338Z";
-// Toes overlap the top of the sole so they read as part of the foot.
-const TOES = [
-  { cx: 88, cy: 48, rx: 9, ry: 14 },
-  { cx: 108, cy: 48, rx: 8.5, ry: 13 },
-  { cx: 126, cy: 55, rx: 8, ry: 12 },
-  { cx: 142, cy: 68, rx: 7, ry: 10 }
-];
-const BIG_TOE = { cx: 60, cy: 52, rx: 16, ry: 24 };
-const BANDS: Partial<Record<ZoneId, [number, number]>> = { ball: [80, 132], "upper-arch": [132, 192], "lower-arch": [192, 252], heel: [252, 345] };
-const SPLIT_X = 118;
+type View = "chart" | "nerves" | "bones";
+type Feet = "both" | FootSide;
 
-const ZONE_FILL: Record<ZoneId, string> = {
-  "big-toe": "rgb(var(--accent) / 0.55)",
-  "big-toe-base": "rgb(var(--bad) / 0.45)",
-  toes: "rgb(var(--accent) / 0.3)",
-  ball: "rgb(var(--parasymp) / 0.35)",
-  "upper-arch": "rgb(var(--symp) / 0.4)",
-  "lower-arch": "rgb(var(--lumbar) / 0.55)",
-  heel: "rgb(var(--sacral) / 0.5)",
-  "inner-edge": "rgb(var(--thoracic) / 0.55)"
-};
-const NERVE_FILL: Record<NerveId, string> = {
-  "medial-plantar": "rgb(var(--accent) / 0.45)",
-  "lateral-plantar": "rgb(var(--parasymp) / 0.4)",
-  calcaneal: "rgb(var(--lumbar) / 0.6)",
-  saphenous: "rgb(var(--symp) / 0.5)"
-};
-
-type Mode = "chart" | "nerves";
+const W = FOOT_BOX.width;
+const GAP = 24;
+const cat = (slot: number, alpha = 1) => `rgb(var(--cat-${slot}) / ${alpha})`;
+const flipX = (foot: FootSide, x: number) => (foot === "left" ? W - x : x);
+// Labels sit on top of coloured areas and bone outlines; a surface-coloured
+// stroke behind each glyph keeps them readable in both schemes.
+const HALO = { fill: "rgb(var(--ink))", stroke: "rgb(var(--surface))", strokeWidth: 2.5, paintOrder: "stroke", strokeLinejoin: "round" } as const;
+const GROUP_ORDER: GroupId[] = ["head", "glands", "chest", "digestion", "urinary", "spine", "limbs"];
 
 export function FootMap({ locale }: { locale: Locale }) {
   const c = FOOT_COPY;
-  const [mode, setMode] = useState<Mode>("chart");
-  const [id, setId] = useState<ZoneId>("big-toe-base");
-  const zone = ZONES.find((z) => z.id === id)!;
+  const narrow = useMediaQuery("(max-width: 639px)");
+  const [view, setView] = useState<View>("chart");
+  const [feetChoice, setFeetChoice] = useState<Feet | null>(null);
+  const [id, setId] = useState("neck");
+  const feet: Feet = feetChoice ?? (narrow ? "right" : "both");
+  const zone = zoneById(id)!;
+  const shown: FootSide[] = feet === "both" ? ["left", "right"] : [feet];
+  const width = shown.length * W + (shown.length - 1) * GAP;
 
-  /** The shape of a zone, for both filling and outlining. */
-  const zoneShape = (z: ZoneId, props: React.SVGProps<SVGElement>): ReactNode => {
-    const p = props as React.SVGProps<SVGRectElement & SVGEllipseElement & SVGPathElement>;
-    if (z === "big-toe") return <path d={`M${BIG_TOE.cx - BIG_TOE.rx} ${BIG_TOE.cy}A${BIG_TOE.rx} ${BIG_TOE.ry} 0 0 1 ${BIG_TOE.cx + BIG_TOE.rx} ${BIG_TOE.cy}Z`} {...p} />;
-    if (z === "big-toe-base") return <path d={`M${BIG_TOE.cx - BIG_TOE.rx} ${BIG_TOE.cy}A${BIG_TOE.rx} ${BIG_TOE.ry} 0 0 0 ${BIG_TOE.cx + BIG_TOE.rx} ${BIG_TOE.cy}Z`} {...p} />;
-    if (z === "toes") return <g>{TOES.map((t) => <ellipse key={t.cx} {...t} {...p} />)}</g>;
-    if (z === "inner-edge") return <rect x={30} y={96} width={20} height={200} clipPath="url(#sole-clip)" {...p} />;
-    const [y0, y1] = BANDS[z]!;
-    return <rect x={20} y={y0} width={160} height={y1 - y0} clipPath="url(#sole-clip)" {...p} />;
+  const pick = (z: Zone) => {
+    setId(z.id);
+    // A zone only drawn on the other foot: bring that foot into view.
+    if (feet !== "both" && z.feet !== "both" && z.feet !== feet) setFeetChoice(z.feet);
   };
 
-  return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-start">
-      <div className="min-w-0 space-y-3">
-        <Choice label={c.mode[locale]} value={mode} onChange={setMode} options={(["chart", "nerves"] as const).map((m) => ({ id: m, name: c.modes[m][locale] }))} />
-        <figure className="m-0 rounded-2xl border border-line bg-surface p-3">
-          <svg viewBox="10 8 180 340" className="mx-auto block h-auto w-full max-w-[260px]" role="img" aria-label={`${c.figure[locale]}: ${zone.short[locale]}`}>
-            <defs>
-              <clipPath id="sole-clip">
-                <path d={SOLE} />
-              </clipPath>
-            </defs>
-            <ellipse {...BIG_TOE} fill="rgb(var(--bone))" stroke="rgb(var(--ink-3))" />
-            {TOES.map((t) => (
-              <ellipse key={t.cx} {...t} fill="rgb(var(--bone))" stroke="rgb(var(--ink-3))" />
+  const footLayer = (foot: FootSide, ox: number) => {
+    const mirror = foot === "left" ? `translate(${ox + W} 0) scale(-1 1)` : `translate(${ox} 0)`;
+    const clip = `foot-clip-${foot}`;
+    const zones = zonesFor(foot);
+    return (
+      <g key={foot}>
+        <defs>
+          <clipPath id={clip}>
+            <path d={FOOT_OUTLINE} />
+            {TOES.map((t, i) => (
+              <ShapeEl key={i} shape={t} />
             ))}
-            <path d={SOLE} fill="rgb(var(--bone))" stroke="rgb(var(--ink-3))" />
+          </clipPath>
+        </defs>
+        <g transform={mirror}>
+          {TOES.map((t, i) => (
+            <ShapeEl key={i} shape={t} fill="rgb(var(--bone))" stroke="rgb(var(--ink-3))" strokeWidth={1} />
+          ))}
+          <path d={FOOT_OUTLINE} fill="rgb(var(--bone))" stroke="rgb(var(--ink-3))" strokeWidth={1} />
 
-            {mode === "chart" ? (
-              <g>
-                {ZONES.map((z) => (
-                  <g key={z.id}>{zoneShape(z.id, { fill: ZONE_FILL[z.id] } as React.SVGProps<SVGElement>)}</g>
-                ))}
-                {(["ball", "upper-arch", "lower-arch", "heel"] as const).map((z) => {
-                  const [y0, y1] = BANDS[z]!;
-                  return (
-                    <text key={z} x={104} y={(y0 + y1) / 2 + 4} textAnchor="middle" fontSize={11} fill="rgb(var(--ink))">
-                      {ZONES.find((x) => x.id === z)!.short[locale]}
-                    </text>
-                  );
-                })}
-                <text x={BIG_TOE.cx} y={42} textAnchor="middle" fontSize={9} fill="rgb(var(--ink))">{ZONES.find((x) => x.id === "big-toe")!.short[locale]}</text>
-                <text x={BIG_TOE.cx} y={67} textAnchor="middle" fontSize={9} fill="rgb(var(--ink))">{ZONES.find((x) => x.id === "big-toe-base")!.short[locale]}</text>
-                <text x={40} y={200} textAnchor="middle" fontSize={9} fill="rgb(var(--ink))" transform="rotate(-90 40 200)">{ZONES.find((x) => x.id === "inner-edge")!.short[locale]}</text>
-              </g>
-            ) : (
-              <g>
-                <g clipPath="url(#sole-clip)">
-                  <rect x={20} y={70} width={SPLIT_X - 20} height={182} fill={NERVE_FILL["medial-plantar"]} />
-                  <rect x={SPLIT_X} y={70} width={60} height={182} fill={NERVE_FILL["lateral-plantar"]} />
-                  <rect x={20} y={252} width={160} height={95} fill={NERVE_FILL.calcaneal} />
-                  <rect x={30} y={150} width={14} height={110} fill={NERVE_FILL.saphenous} />
-                </g>
-                <ellipse {...BIG_TOE} fill={NERVE_FILL["medial-plantar"]} />
-                {TOES.map((t) => (
-                  <ellipse key={t.cx} {...t} fill={t.cx < SPLIT_X ? NERVE_FILL["medial-plantar"] : NERVE_FILL["lateral-plantar"]} />
-                ))}
-                <text x={80} y={170} textAnchor="middle" fontSize={10} fill="rgb(var(--ink))">{NERVES["medial-plantar"].short[locale]}</text>
-                <text x={140} y={200} textAnchor="middle" fontSize={10} fill="rgb(var(--ink))" transform="rotate(-90 140 200)">{NERVES["lateral-plantar"].short[locale]}</text>
-                <text x={100} y={300} textAnchor="middle" fontSize={10} fill="rgb(var(--ink))">{NERVES.calcaneal.short[locale]}</text>
-                <line x1={SPLIT_X} y1={78} x2={SPLIT_X} y2={252} stroke="rgb(var(--ink-2))" strokeDasharray="3 3" />
-              </g>
+          {view === "chart" &&
+            zones.map((z) =>
+              z.shapes.map((s, i) => (
+                <ShapeEl
+                  key={`${z.id}-${i}`}
+                  shape={s}
+                  clipPath={s.kind === "rect" ? `url(#${clip})` : undefined}
+                  fill={s.kind === "path" && s.stroke ? "none" : cat(GROUPS[z.group].slot, z.id === id ? 0.95 : 0.5)}
+                  stroke={s.kind === "path" && s.stroke ? cat(GROUPS[z.group].slot, 0.9) : "rgb(var(--surface) / 0.8)"}
+                  strokeWidth={s.kind === "path" && s.stroke ? 4 : 0.8}
+                  strokeLinecap="round"
+                />
+              ))
             )}
 
-            {/* Hit areas, and the picked zone's outline, on top in both modes */}
-            {ZONES.map((z) => (
-              <g key={`hit-${z.id}`} onClick={() => setId(z.id)} className="cursor-pointer">
-                {zoneShape(z.id, { fill: "transparent", stroke: z.id === id ? "rgb(var(--ink))" : "none", strokeWidth: 2.2 } as React.SVGProps<SVGElement>)}
+          {view === "nerves" && (
+            <g clipPath={`url(#${clip})`}>
+              {NERVE_AREAS.map((a) =>
+                a.shapes.map((s, i) => <ShapeEl key={`${a.nerve}-${i}`} shape={s} fill={cat(NERVES[a.nerve].slot, 0.5)} stroke="none" />)
+              )}
+              <line x1={128} y1={40} x2={128} y2={300} stroke="rgb(var(--ink-2))" strokeDasharray="3 3" />
+            </g>
+          )}
+
+          {view === "bones" && (
+            <g>
+              <path d={FOOT_OUTLINE} fill="rgb(var(--lumbar) / 0.2)" stroke="none" />
+              {BONES.map((b) =>
+                b.shapes.map((s, i) => <ShapeEl key={`${b.label.en}-${i}`} shape={s} fill="rgb(var(--surface))" stroke="rgb(var(--ink-3))" strokeWidth={1} />)
+              )}
+            </g>
+          )}
+
+          {/* Hit areas and the picked zone's outline, in every view */}
+          {zones.map((z) => (
+            <g key={`hit-${z.id}`} onClick={() => pick(z)} className="cursor-pointer">
+              <title>{`${z.n}. ${z.name[locale]}`}</title>
+              {z.shapes.map((s, i) => (
+                <ShapeEl
+                  key={i}
+                  shape={s}
+                  clipPath={s.kind === "rect" ? `url(#${clip})` : undefined}
+                  fill={s.kind === "path" && s.stroke ? "none" : "transparent"}
+                  stroke={z.id === id ? "rgb(var(--ink))" : s.kind === "path" && s.stroke ? "transparent" : "none"}
+                  strokeWidth={s.kind === "path" && s.stroke ? (z.id === id ? 6 : 10) : 1.8}
+                  strokeOpacity={s.kind === "path" && s.stroke && z.id === id ? 0.35 : 1}
+                  strokeDasharray={z.id === id && view !== "chart" ? "3 2" : undefined}
+                />
+              ))}
+            </g>
+          ))}
+        </g>
+
+        {/* Text, placed rather than mirrored */}
+        {view === "chart" &&
+          zones.map((z) => {
+            const x = ox + flipX(foot, z.at[0]);
+            const on = z.id === id;
+            return (
+              <g key={`n-${z.id}`} onClick={() => pick(z)} className="cursor-pointer">
+                <circle cx={x} cy={z.at[1]} r={6} fill={on ? "rgb(var(--ink))" : "rgb(var(--surface) / 0.92)"} stroke="rgb(var(--ink-3))" strokeWidth={0.6} />
+                <text x={x} y={z.at[1] + 2.3} textAnchor="middle" fontSize={6.5} fontWeight={700} fill={on ? "rgb(var(--surface))" : "rgb(var(--ink))"}>
+                  {z.n}
+                </text>
               </g>
-            ))}
+            );
+          })}
+        {view === "nerves" &&
+          (
+            [
+              ["medial-plantar", 74, 170],
+              ["lateral-plantar", 148, 120],
+              ["calcaneal", 104, 356]
+            ] as const
+          ).map(([n, x, y]) => (
+            <text key={n} x={ox + flipX(foot, x)} y={y} textAnchor="middle" fontSize={8} fontWeight={600} {...HALO}>
+              {NERVES[n].short[locale]}
+            </text>
+          ))}
+        {view === "bones" &&
+          BONES.map((b) => (
+            <text key={b.label.en} x={ox + flipX(foot, b.at[0])} y={b.at[1]} textAnchor="middle" fontSize={7.5} fontWeight={600} {...HALO}>
+              {b.label[locale]}
+            </text>
+          ))}
+        <text x={ox + W / 2} y={FOOT_BOX.height + 14} textAnchor="middle" fontSize={9} letterSpacing="0.1em" fill="rgb(var(--ink-3))">
+          {foot === "left" ? c.left[locale] : c.right[locale]}
+        </text>
+      </g>
+    );
+  };
+
+  const caption = view === "chart" ? c.chartCaveat : view === "nerves" ? c.nervesCaption : c.bonesCaption;
+  const organ = zone.name[locale].toLowerCase();
+
+  return (
+    <div className="grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:items-start">
+      <div className="min-w-0 space-y-3">
+        <Choice label={c.view[locale]} value={view} onChange={setView} options={(["chart", "nerves", "bones"] as const).map((v) => ({ id: v, name: c.views[v][locale] }))} />
+        <Choice label={c.feet[locale]} value={feet} onChange={setFeetChoice} options={(["both", "left", "right"] as const).map((f) => ({ id: f, name: c.feetOptions[f][locale] }))} />
+        <figure className="m-0 rounded-2xl border border-line bg-surface p-3">
+          <svg viewBox={`0 0 ${width} ${FOOT_BOX.height + 20}`} className="mx-auto block h-auto w-full" style={{ maxWidth: shown.length === 1 ? 320 : 560 }} role="img" aria-label={`${c.figure[locale]}: ${zone.n}. ${zone.name[locale]}`}>
+            {shown.map((foot, i) => footLayer(foot, i * (W + GAP)))}
           </svg>
-          {mode === "chart" && <figcaption className="mt-2 px-1 text-xs text-ink-3">{c.chartCaveat[locale]}</figcaption>}
+          <figcaption className="mt-2 px-1 text-xs text-ink-3">{caption[locale]}</figcaption>
+          {view === "nerves" && (
+            <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1 px-1 text-xs text-ink-2">
+              {(Object.keys(NERVES) as (keyof typeof NERVES)[]).map((n) => (
+                <li key={n} className="flex items-center gap-1.5">
+                  <span className="inline-block h-2.5 w-2.5 rounded-sm" style={{ background: cat(NERVES[n].slot, 0.6) }} aria-hidden="true" />
+                  {NERVES[n].short[locale]} <span className="tnum text-ink-3">{NERVES[n].roots}</span>
+                </li>
+              ))}
+            </ul>
+          )}
         </figure>
-        <Choice label={c.zones[locale]} value={id} onChange={setId} options={ZONES.map((z) => ({ id: z.id, name: z.short[locale] }))} />
       </div>
-      <article className="min-w-0 space-y-3 rounded-2xl border border-line bg-surface p-5" aria-live="polite">
-        <div className="rounded-xl border border-dashed border-line p-3">
-          <p className="text-xs font-semibold uppercase tracking-wide text-ink-3">{c.chartSays[locale]}</p>
-          <p className="mt-1 text-lg font-semibold italic">{zone.claim[locale]}</p>
-        </div>
-        <div className="rounded-xl bg-raised p-3">
-          <p className="text-xs font-semibold uppercase tracking-wide text-ink-3">{c.nervesSay[locale]}</p>
-          <ul className="mt-1 space-y-1">
-            {zone.nerves.map((n) => (
-              <li key={n}>
-                <span className="font-semibold">{NERVES[n].name[locale]}</span>
-                <span className="text-sm text-ink-2">, {fill(c.enters[locale], { roots: NERVES[n].roots.replace("-", "\u2011") })}</span>
-              </li>
+
+      <div className="min-w-0 space-y-4">
+        <article className="space-y-3 rounded-2xl border border-line bg-surface p-5" aria-live="polite">
+          <div className="flex items-start gap-3">
+            <span className="tnum flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white" style={{ background: cat(GROUPS[zone.group].slot) }}>
+              {zone.n}
+            </span>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-ink-3">{c.chartSays[locale]}</p>
+              <h4 className="text-lg font-semibold">{zone.name[locale]}</h4>
+              <p className="text-xs text-ink-3">
+                {GROUPS[zone.group].name[locale]} · {zone.feet === "both" ? c.bothFeet[locale] : zone.feet === "left" ? c.leftOnly[locale] : c.rightOnly[locale]}
+              </p>
+            </div>
+          </div>
+          <div className="rounded-xl bg-raised p-3">
+            <p className="text-xs font-semibold uppercase tracking-wide text-ink-3">{c.under[locale]}</p>
+            <ul className="mt-1 list-disc space-y-0.5 pl-5 text-sm">
+              {zone.under.map((u) => (
+                <li key={u}>{STRUCTURES[u][locale]}</li>
+              ))}
+            </ul>
+          </div>
+          <div className="rounded-xl bg-raised p-3">
+            <p className="text-xs font-semibold uppercase tracking-wide text-ink-3">{c.nerve[locale]}</p>
+            <ul className="mt-1 space-y-1 text-sm">
+              {zone.nerves.map((n) => (
+                <li key={n}>
+                  <span className="font-semibold">{NERVES[n].name[locale]}</span>
+                  <span className="text-ink-2">, {fill(c.enters[locale], { roots: NERVES[n].roots.replace("-", "‑") })}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <p className="font-medium leading-relaxed">
+            {zone.id === "neck" ? c.neckNote[locale] : zone.id === "sciatic" ? c.sciaticNote[locale] : fill(c.noPath[locale], { organ })}
+          </p>
+          <p className="text-sm text-ink-3">{c.evidence[locale]}</p>
+          <SourceList ids={FOOT_SOURCES} locale={locale} />
+        </article>
+
+        <section aria-label={c.key[locale]} className="rounded-2xl border border-line bg-surface p-4">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-ink-3">{c.key[locale]}</p>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {GROUP_ORDER.map((g) => (
+              <div key={g}>
+                <p className="mb-1 flex items-center gap-1.5 text-xs font-semibold">
+                  <span className="inline-block h-2.5 w-2.5 rounded-sm" style={{ background: cat(GROUPS[g].slot) }} aria-hidden="true" />
+                  {GROUPS[g].name[locale]}
+                </p>
+                <ul className="space-y-0.5">
+                  {ZONES.filter((z) => z.group === g).map((z) => (
+                    <li key={z.id}>
+                      <button
+                        type="button"
+                        aria-pressed={z.id === id}
+                        onClick={() => pick(z)}
+                        className={`flex w-full items-baseline gap-2 rounded-md px-1.5 py-0.5 text-left text-sm ${z.id === id ? "bg-ink text-bg" : "hover:bg-raised"}`}
+                      >
+                        <span className="tnum w-5 shrink-0 text-right text-xs font-bold">{z.n}</span>
+                        <span>
+                          {z.name[locale]}
+                          {z.feet !== "both" && <span className="ml-1.5 whitespace-nowrap text-xs opacity-70">({z.feet === "left" ? c.feetOptions.left[locale] : c.feetOptions.right[locale]})</span>}
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             ))}
-          </ul>
-        </div>
-        {zone.id === "big-toe-base" && <p className="text-sm font-medium">{c.neckNote[locale]}</p>}
-        <p className="leading-relaxed text-ink-2">{c.summary[locale]}</p>
-        <p className="text-sm text-ink-3">{c.evidence[locale]}</p>
-        <SourceList ids={FOOT_SOURCES} locale={locale} />
-      </article>
+          </div>
+        </section>
+      </div>
     </div>
   );
 }

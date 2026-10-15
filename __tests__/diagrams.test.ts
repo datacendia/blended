@@ -1,7 +1,7 @@
 import { balanceState, convexHull, margin, polygonArea, STANCES } from "@/lib/diagrams/balance";
 import { bruising, markLevel } from "@/lib/diagrams/cupping";
 import { chanceLog10, chanceOfOne, expectedLog10, scientific } from "@/lib/diagrams/dilution";
-import { NERVES, ZONES } from "@/lib/diagrams/foot";
+import { FOOT_BOX, NERVE_AREAS, NERVES, STRUCTURES, zoneById, ZONES, zonesFor } from "@/lib/diagrams/foot";
 import { HEAD_ANGLES, modelLoad } from "@/lib/diagrams/headLever";
 import { MIMICS } from "@/lib/diagrams/mimics";
 import { GRADES } from "@/lib/diagrams/mobilisation";
@@ -173,6 +173,7 @@ describe("reflexology chart, checked", () => {
   const roots = ["L3", "L4", "L5", "S1", "S2"];
   it("traces every zone of the sole to roots between L3 and S2", () => {
     for (const z of ZONES) {
+      expect(z.nerves.length).toBeGreaterThan(0);
       for (const n of z.nerves) {
         const [a, b] = NERVES[n].roots.split("-");
         expect(roots).toContain(a);
@@ -180,10 +181,40 @@ describe("reflexology chart, checked", () => {
       }
     }
   });
-  it("wires the chart's 'neck' point to the low back", () => {
-    const neck = ZONES.find((z) => z.id === "big-toe-base")!;
-    expect(neck.claim.en).toBe("Neck");
+  it("draws the chart in full detail: over thirty zones on each foot, numbered once each", () => {
+    expect(zonesFor("left").length).toBeGreaterThanOrEqual(30);
+    expect(zonesFor("right").length).toBeGreaterThanOrEqual(30);
+    const numbers = ZONES.map((z) => z.n);
+    expect(new Set(numbers).size).toBe(numbers.length);
+    expect(new Set(ZONES.map((z) => z.id)).size).toBe(ZONES.length);
+  });
+  it("puts the heart and spleen on the left foot and the liver and gallbladder on the right, as charts do", () => {
+    expect(zonesFor("left").map((z) => z.id)).toEqual(expect.arrayContaining(["heart", "spleen", "descending-colon", "sigmoid", "rectum"]));
+    expect(zonesFor("left").map((z) => z.id)).not.toContain("liver");
+    expect(zonesFor("right").map((z) => z.id)).toEqual(expect.arrayContaining(["liver", "gallbladder", "ascending-colon", "appendix"]));
+    expect(zonesFor("right").map((z) => z.id)).not.toContain("heart");
+  });
+  it("says what is under the thumb for every zone, from the anatomy list", () => {
+    for (const z of ZONES) {
+      expect(z.under.length).toBeGreaterThan(0);
+      for (const u of z.under) expect(STRUCTURES[u]).toBeDefined();
+    }
+  });
+  it("wires the chart's neck to the low back", () => {
+    const neck = zoneById("neck")!;
     expect(neck.nerves.map((n) => NERVES[n].roots)).toEqual(["L4-L5"]);
+  });
+  it("keeps every zone's number inside the drawing", () => {
+    for (const z of ZONES) {
+      expect(z.at[0]).toBeGreaterThanOrEqual(0);
+      expect(z.at[0]).toBeLessThanOrEqual(FOOT_BOX.width);
+      expect(z.at[1]).toBeGreaterThanOrEqual(0);
+      expect(z.at[1]).toBeLessThanOrEqual(FOOT_BOX.height);
+    }
+  });
+  it("draws a territory for every nerve it names", () => {
+    const drawn = new Set(NERVE_AREAS.map((a) => a.nerve));
+    for (const z of ZONES) for (const n of z.nerves) expect(drawn.has(n)).toBe(true);
   });
 });
 

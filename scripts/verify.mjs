@@ -211,9 +211,23 @@ console.log("The tools give their answers");
 }
 {
   const { page } = await open("/en/who-to-see/reflexology/", { width: 1280 });
-  await page.getByRole("button", { name: "What the nerves say" }).click();
+  const key = page.getByRole("region", { name: "Key: tap any zone" });
+  (await key.getByRole("button").count()) >= 36 ? pass("foot map: the key lists every zone") : fail("foot map: key is short");
+  (await page.getByText("The chart's neck is wired to the low back", { exact: false }).count()) > 0 ? pass("foot map: the neck zone traces to L4-L5") : fail("foot map: neck note missing");
+  await page.getByRole("button", { name: "The real nerves" }).click();
   (await page.locator("svg text", { hasText: "Medial plantar" }).count()) > 0 ? pass("foot map: nerve view draws the medial plantar territory") : fail("foot map: nerve view missing");
-  (await page.getByText("The chart's 'neck' is wired to the low back", { exact: false }).count()) > 0 ? pass("foot map: the 'neck' point traces to L4-L5") : fail("foot map: neck note missing");
+  await page.getByRole("button", { name: "What's underneath" }).click();
+  (await page.locator("svg text", { hasText: "Sesamoids" }).count()) > 0 ? pass("foot map: bone view labels the sesamoids") : fail("foot map: bone view missing");
+  await page.close();
+}
+{
+  // Phones show one foot. Picking a left-only zone has to bring the left foot up.
+  const { page } = await open("/en/who-to-see/reflexology/", { width: 390 });
+  (await page.locator("svg text", { hasText: "RIGHT" }).count()) === 1 && (await page.locator("svg text", { hasText: "LEFT" }).count()) === 0
+    ? pass("foot map: a phone starts on one foot")
+    : fail("foot map: phone shows the wrong feet");
+  await page.getByRole("region", { name: "Key: tap any zone" }).getByRole("button", { name: /^9\s*Heart/ }).click();
+  (await page.locator("svg text", { hasText: "LEFT" }).count()) === 1 ? pass("foot map: picking the heart switches to the left foot") : fail("foot map: heart stayed on the right foot");
   await page.close();
 }
 {
