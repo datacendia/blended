@@ -82,10 +82,27 @@ export const SOURCES = [
     usedFor: "Neural mobilisation (nerve gliding)."
   },
   {
+    id: "butler2000",
+    citation: "Butler DS. The Sensitive Nervous System. Adelaide: Noigroup Publications; 2000.",
+    usedFor: "Which arm and neck positions load the median, radial and ulnar nerves, and the standard upper-limb nerve tests."
+  },
+  {
+    id: "coppieters2008",
+    citation:
+      "Coppieters MW, Butler DS. Do 'sliders' slide and 'tensioners' tension? An analysis of neurodynamic techniques and considerations regarding their application. Man Ther. 2008;13(3):213-221.",
+    usedFor: "Sliders move a nerve with much less strain than tensioners."
+  },
+  {
     id: "kuijper2009",
     citation:
       "Kuijper B, Tans JTJ, Beelen A, Nollet F, de Visser M. Cervical collar or physiotherapy versus wait and see policy for recent onset cervical radiculopathy: randomised trial. BMJ. 2009;339:b3883.",
     usedFor: "Short-term collar or physiotherapy speeds early arm-pain relief versus waiting."
+  },
+  {
+    id: "fountas2007",
+    citation:
+      "Fountas KN, Kapsalaki EZ, Nikolakakos LG, et al. Anterior cervical discectomy and fusion associated complications. Spine. 2007;32(21):2310-2317.",
+    usedFor: "What can go wrong after surgery from the front of the neck: trouble swallowing most often, hoarseness less often."
   },
   {
     id: "persson1997",
@@ -178,6 +195,11 @@ export const SOURCES = [
     usedFor: "The side opening a neck root leaves through gets smaller when looking up or turning toward that side, and larger when looking down."
   },
   {
+    id: "maitland2005",
+    citation: "Maitland GD, Hengeveld E, Banks K, English K. Maitland's Vertebral Manipulation. 7th ed. Edinburgh: Elsevier Butterworth-Heinemann; 2005.",
+    usedFor: "The grades of mobilisation, drawn on the movement diagram: where in the range each works and what each is used for."
+  },
+  {
     id: "kawchuk2015",
     citation:
       "Kawchuk GN, Fryer J, Jaremko JL, Zeng H, Rowe L, Thompson R. Real-time visualization of joint cavitation. PLoS One. 2015;10(4):e0119470.",
@@ -188,6 +210,30 @@ export const SOURCES = [
     citation:
       "Patel KC, Gross A, Graham N, et al. Massage for mechanical neck disorders. Cochrane Database Syst Rev. 2012;(9):CD004871.",
     usedFor: "Massage for neck pain: effects uncertain, no recommendation possible."
+  },
+  {
+    id: "simons1999",
+    citation:
+      "Simons DG, Travell JG, Simons LS. Travell & Simons' Myofascial Pain and Dysfunction: The Trigger Point Manual. Vol 1: Upper Half of Body. 2nd ed. Baltimore: Williams & Wilkins; 1999.",
+    usedFor: "Where pain from each neck and shoulder muscle is commonly felt (the referral maps)."
+  },
+  {
+    id: "lucas2009",
+    citation:
+      "Lucas N, Macaskill P, Irwig L, Moran R, Bogduk N. Reliability of physical examination for diagnosis of myofascial trigger points: a systematic review of the literature. Clin J Pain. 2009;25(1):80-89.",
+    usedFor: "Examiners often disagree on where trigger points are."
+  },
+  {
+    id: "quintner2015",
+    citation:
+      "Quintner JL, Bove GM, Cohen ML. A critical evaluation of the trigger point phenomenon. Rheumatology (Oxford). 2015;54(3):392-399.",
+    usedFor: "The trigger point theory behind the referral maps is disputed."
+  },
+  {
+    id: "who2008",
+    citation:
+      "World Health Organization Regional Office for the Western Pacific. WHO Standard Acupuncture Point Locations in the Western Pacific Region. Manila: WHO; 2008.",
+    usedFor: "Where named acupuncture points are located."
   },
   {
     id: "macpherson2015",
@@ -234,6 +280,12 @@ export const SOURCES = [
     citation:
       "National Health and Medical Research Council. NHMRC Information Paper: Evidence on the effectiveness of homeopathy for treating health conditions. Canberra: NHMRC; 2015.",
     usedFor: "No health condition for which there is reliable evidence that homeopathy works."
+  },
+  {
+    id: "padua2016",
+    citation:
+      "Padua L, Coraci D, Erra C, et al. Carpal tunnel syndrome: clinical features, diagnosis, and management. Lancet Neurol. 2016;15(12):1273-1284.",
+    usedFor: "Carpal tunnel syndrome: where it is felt, night symptoms, and how it is confirmed."
   }
 ] as const satisfies readonly Source[];
 

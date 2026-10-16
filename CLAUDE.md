@@ -48,7 +48,9 @@ build (`standalone/`) render the same components. A new page needs its
 `primary` in `lib/nav.ts` only if it belongs in the desktop header (seven
 fit). The guides under `who-to-see/<id>/` (professions and practices, listed
 in `GUIDE_PAGES`) are the one nested route; the standalone router reads the
-same list. Components may
+same list. Each guide's diagrams are listed in `lib/diagrams/registry.ts`
+(a test fails if a guide has none) and rendered by
+`components/guide/GuideDiagrams.tsx`. Components may
 use `next/link` and `usePathname` only; anything else from Next needs a shim.
 
 ## Conventions

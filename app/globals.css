@@ -38,6 +38,19 @@
   --bone: 236 229 211;
   --nerve: 214 156 20;
   --disc: 116 164 210;
+  --bruise: 118 52 150;
+  --muscle: 200 84 84;
+  /* Categorical slots for diagrams with several named groups (reflexology
+     zones). The reference palette from the dataviz validator: adjacent pairs
+     pass CVD and normal-vision separation in both modes; every zone also
+     carries a number, so colour is never the only key. */
+  --cat-1: 42 120 214;
+  --cat-2: 235 104 52;
+  --cat-3: 27 175 122;
+  --cat-4: 237 161 0;
+  --cat-5: 232 123 164;
+  --cat-6: 0 131 0;
+  --cat-7: 98 80 214;
 }
 
 /* Dark follows the system unless the page is explicitly told otherwise
@@ -70,6 +83,15 @@
     --bone: 92 96 86;
     --nerve: 232 186 64;
     --disc: 86 140 196;
+    --bruise: 176 120 210;
+    --muscle: 222 118 112;
+    --cat-1: 57 135 229;
+    --cat-2: 217 89 38;
+    --cat-3: 25 158 112;
+    --cat-4: 201 133 0;
+    --cat-5: 213 81 129;
+    --cat-6: 0 131 0;
+    --cat-7: 144 133 233;
   }
 }
 
@@ -99,6 +121,15 @@
   --bone: 92 96 86;
   --nerve: 232 186 64;
   --disc: 86 140 196;
+  --bruise: 176 120 210;
+  --muscle: 222 118 112;
+  --cat-1: 57 135 229;
+  --cat-2: 217 89 38;
+  --cat-3: 25 158 112;
+  --cat-4: 201 133 0;
+  --cat-5: 213 81 129;
+  --cat-6: 0 131 0;
+  --cat-7: 144 133 233;
 }
 
 html {
